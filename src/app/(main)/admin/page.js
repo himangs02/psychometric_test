@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import axios from "axios";
-import { Eye, GraduationCap } from "lucide-react";
+import { Eye, GraduationCap, ChevronLeft, ChevronRight } from "lucide-react";
 import { TESTS } from "@/data";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -130,6 +130,8 @@ export default function AdminPanel() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [dataToExport, setDataToExport] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const fetchAllTestSubmissions = async () => {
     try {
@@ -220,7 +222,12 @@ export default function AdminPanel() {
         testSubmissions.filter((submission) => submission.test_name === testName)
       );
     }
-  }, [startDate, endDate, testSubmissions]);
+    setCurrentPage(1);
+  }, [startDate, endDate, testSubmissions, testName]);
+
+  const totalPages = Math.ceil(filteredSubmissions.length / rowsPerPage);
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const paginatedSubmissions = filteredSubmissions.slice(startIndex, startIndex + rowsPerPage);
 
   if (!loggedIn) {
     return (
@@ -321,10 +328,10 @@ export default function AdminPanel() {
             </TableHeader>
 
             <TableBody>
-              {filteredSubmissions.length !== 0 ? (
-                filteredSubmissions.map((submission, index) => (
+              {paginatedSubmissions.length !== 0 ? (
+                paginatedSubmissions.map((submission, index) => (
                   <TableRow key={submission.id}>
-                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{startIndex + index + 1}</TableCell>
                     <TableCell>{submission.name}</TableCell>
                     <TableCell>{submission.test_name}</TableCell>
                     <TableCell>{submission.course}</TableCell>
@@ -619,6 +626,56 @@ export default function AdminPanel() {
               )}
             </TableBody>
           </Table>
+
+          {/* Pagination Controls */}
+          {filteredSubmissions.length > 0 && (
+            <div className="flex items-center justify-between mt-4">
+              <div className="flex items-center space-x-2">
+                <p className="text-sm text-muted-foreground">Rows per page</p>
+                <Select
+                  value={rowsPerPage.toString()}
+                  onValueChange={(value) => {
+                    setRowsPerPage(Number(value));
+                    setCurrentPage(1);
+                  }}
+                >
+                  <SelectTrigger className="w-[80px]">
+                    <SelectValue placeholder={rowsPerPage} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="50">50</SelectItem>
+                    <SelectItem value="100">100</SelectItem>
+                    <SelectItem value="200">200</SelectItem>
+                    <SelectItem value="500">500</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center space-x-4">
+                <p className="text-sm font-medium">
+                  Page {currentPage} of {totalPages || 1}
+                </p>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages || totalPages === 0}
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

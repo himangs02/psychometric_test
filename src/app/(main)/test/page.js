@@ -57,7 +57,6 @@ export default function ImprovedPersonalityTest() {
     name: "",
     dob: "",
     class: "",
-    roll_number: "",
     gender: "",
     email: "",
     father_name: "",
@@ -130,7 +129,7 @@ export default function ImprovedPersonalityTest() {
       dob: userInfo.dob,
       course: userInfo.class,
       married: 0,
-      education: userInfo.roll_number,
+      education: "",
       religion: "not-specified",
       gender: userInfo.gender,
       email: userInfo.email,
@@ -146,7 +145,7 @@ export default function ImprovedPersonalityTest() {
 
     try {
       await axios.post(
-        "https://deeppink-moose-154369.hostingersite.com/submit-details",
+        "/api/submit-details",
         payload
       );
       window.href="/"
@@ -208,10 +207,6 @@ export default function ImprovedPersonalityTest() {
                 <div className="space-y-1">
                   <Label htmlFor="class">Class</Label>
                   <Input type="text" id="class" value={userInfo.class} onChange={(e) => setUserInfo({ ...userInfo, class: e.target.value })} />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="roll_number">Roll Number</Label>
-                  <Input type="text" id="roll_number" value={userInfo.roll_number} onChange={(e) => setUserInfo({ ...userInfo, roll_number: e.target.value })} />
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="gender">Gender</Label>

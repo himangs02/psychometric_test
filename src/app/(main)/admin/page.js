@@ -134,7 +134,7 @@ export default function AdminPanel() {
   const fetchAllTestSubmissions = async () => {
     try {
       const response = await axios.get(
-        "https://deeppink-moose-154369.hostingersite.com/"
+        "/api/submissions"
       );
       if(testName === "all") {
         setFilteredSubmissions(response.data);

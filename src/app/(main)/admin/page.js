@@ -174,6 +174,7 @@ export default function AdminPanel() {
     const session = sessionStorage.getItem("adminLoggedIn");
     if (session === "true") {
       setLoggedIn(true);
+      fetchAllTestSubmissions();
     }
   }, []);
 
@@ -182,6 +183,7 @@ export default function AdminPanel() {
       sessionStorage.setItem("adminLoggedIn", "true");
       setLoggedIn(true);
       setError("");
+      fetchAllTestSubmissions();
     } else {
       setError("Invalid email or password.");
     }

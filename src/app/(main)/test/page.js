@@ -61,9 +61,12 @@ export default function ImprovedPersonalityTest() {
     email: "",
     father_name: "",
     phone: "",
-    institution: "",
+    school_name: "",
+    state: "",
     city: "",
   });
+
+  const [schools, setSchools] = useState([]);
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -71,6 +74,9 @@ export default function ImprovedPersonalityTest() {
     if (test && TESTS[test]) {
       setSelectedTest(test);
     }
+    
+    // Fetch unique schools for autocomplete
+    axios.get('/api/schools').then(res => setSchools(res.data)).catch(console.error);
   }, []);
 
   const handleAnswer = (value) => {
@@ -135,9 +141,9 @@ export default function ImprovedPersonalityTest() {
       email: userInfo.email,
       occupation: userInfo.father_name,
       phone: userInfo.phone,
-      institution: userInfo.institution,
+      institution: userInfo.school_name,
       city: userInfo.city,
-      rural_or_urban: "not-specified",
+      rural_or_urban: userInfo.city,
       test_name: test.title,
       score: totalScore,
       result: JSON.stringify(interpretation),
@@ -236,8 +242,23 @@ export default function ImprovedPersonalityTest() {
                   <Input type="text" id="phone" value={userInfo.phone} onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })} />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="institution">State</Label>
-                  <Input type="text" id="institution" value={userInfo.institution} onChange={(e) => setUserInfo({ ...userInfo, institution: e.target.value })} />
+                  <Label htmlFor="school">School Name</Label>
+                  <Input 
+                    type="text" 
+                    id="school" 
+                    list="school-list"
+                    value={userInfo.school_name} 
+                    onChange={(e) => setUserInfo({ ...userInfo, school_name: e.target.value })} 
+                  />
+                  <datalist id="school-list">
+                    {schools.map((school, idx) => (
+                      <option key={idx} value={school} />
+                    ))}
+                  </datalist>
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="state">State</Label>
+                  <Input type="text" id="state" value={userInfo.state} onChange={(e) => setUserInfo({ ...userInfo, state: e.target.value })} />
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="city">City</Label>

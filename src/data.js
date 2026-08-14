@@ -1,3 +1,5 @@
+import { ADDITIONAL_TESTS, BELBIN_SECTIONS, scoreBelbin, scoreMcClelland, scoreMBTI, MCCLELLAND_QUESTIONS, MBTI_QUESTIONS } from "@/data/additionalTests";
+
 
 export const questionsOfDweck = [
     "Your intelligence is something very basic about you that you can’t change very much.",
@@ -1167,3 +1169,20 @@ riasec: {
   }
 };
 
+
+
+Object.assign(TESTS, {
+  belbin: {
+    ...ADDITIONAL_TESTS.belbin,
+    sections: BELBIN_SECTIONS,
+    score: scoreBelbin,
+  },
+  mcclelland: {
+    ...ADDITIONAL_TESTS.mcclelland,
+    score: scoreMcClelland,
+  },
+  mbti: {
+    ...ADDITIONAL_TESTS.mbti,
+    score: scoreMBTI,
+  },
+});

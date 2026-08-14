@@ -599,6 +599,20 @@ export default function AdminPanel() {
                                 }
                               })()}
                             </div>
+                            <div className="col-span-full border-t pt-4">
+                              <details className="rounded-lg border bg-gray-50 p-4">
+                                <summary className="cursor-pointer font-semibold text-[#841844]">View Saved Question Responses</summary>
+                                {(() => {
+                                  try {
+                                    const raw = submission.responses ? JSON.parse(submission.responses) : null;
+                                    if (!raw) return <p className="text-sm text-gray-500 mt-3">No question-level responses stored for this submission.</p>;
+                                    return <pre className="mt-3 max-h-80 overflow-auto rounded bg-white p-3 text-xs whitespace-pre-wrap">{JSON.stringify(raw, null, 2)}</pre>;
+                                  } catch (e) {
+                                    return <p className="text-sm text-red-600 mt-3">Saved response data could not be parsed.</p>;
+                                  }
+                                })()}
+                              </details>
+                            </div>
                             <div className="col-span-1">
                               <Label className="text-muted-foreground">
                                 Submitted On

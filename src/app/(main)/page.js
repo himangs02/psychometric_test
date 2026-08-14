@@ -130,6 +130,27 @@ export default function HomePage() {
             desc:
               "Reflect on your ability to let go of resentment, move forward, and restore emotional peace.",
             gradient: "from-pink-500 to-[#841844]",
+          },
+          {
+            href: "/test?test=belbin",
+            title: "Belbin Team Role Assessment",
+            badge: "Team Roles",
+            desc: "Identify your preferred contribution to team work across eight Belbin team roles, including your primary and secondary roles.",
+            gradient: "from-violet-500 to-[#841844]",
+          },
+          {
+            href: "/test?test=mcclelland",
+            title: "McClelland Motivation Profile",
+            badge: "Motivation",
+            desc: "Understand your motivational drivers across Achievement, Affiliation and Power.",
+            gradient: "from-amber-500 to-[#841844]",
+          },
+          {
+            href: "/test?test=mbti",
+            title: "Myers-Briggs Type Indicator (MBTI)",
+            badge: "Personality Type",
+            desc: "Explore your four preference dimensions and receive your 16-type personality profile.",
+            gradient: "from-cyan-500 to-[#841844]",
           }
         ].map(({ href, title, badge, desc, gradient }) => (
           <Link key={title} href={href} className="h-full">

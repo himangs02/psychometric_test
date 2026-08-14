@@ -33,11 +33,32 @@ async function migrate() {
         phone VARCHAR(50),
         institution VARCHAR(255),
         city VARCHAR(255),
+        state VARCHAR(255),
         rural_or_urban VARCHAR(50),
         test_name VARCHAR(255),
         score INT,
         result TEXT,
+        responses LONGTEXT,
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    const [existingColumns] = await connection.query(`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'submissions'`);
+    const columnNames = new Set(existingColumns.map((row) => row.COLUMN_NAME));
+    if (!columnNames.has('state')) await connection.execute(`ALTER TABLE submissions ADD COLUMN state VARCHAR(255) NULL`);
+    if (!columnNames.has('responses')) await connection.execute(`ALTER TABLE submissions ADD COLUMN responses LONGTEXT NULL`);
+
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS submission_responses (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        submission_id INT NOT NULL,
+        question_number INT NULL,
+        section_label VARCHAR(50) NULL,
+        question_text TEXT NULL,
+        selected_value TEXT NULL,
+        score_value DECIMAL(10,2) NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_submission_id (submission_id)
       )
     `);
 

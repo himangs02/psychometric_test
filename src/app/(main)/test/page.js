@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { TESTS } from "@/data";
 import { Input } from "@/components/ui/input";
+import { ChevronDown } from "lucide-react";
 import axios from "axios";
 
 const selectFields = {
@@ -164,6 +165,76 @@ function Suggestions({ suggestions }) {
   return <div className="bg-orange-50 p-4 rounded-lg border border-orange-100"><h4 className="font-semibold text-[#841844] mb-2">Suggestions</h4><ul className="list-disc list-inside text-gray-700 space-y-1">{suggestions.map((s, i) => <li key={i}>{s}</li>)}</ul></div>;
 }
 
+function SchoolSelect({ value, onChange, schools }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef(null);
+
+  const filteredSchools = useMemo(() => {
+    if (!value) return schools;
+    return schools.filter((s) => s.toLowerCase().includes(value.toLowerCase()));
+  }, [schools, value]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="space-y-1 relative" ref={containerRef}>
+      <Label htmlFor="school_name">School Name</Label>
+      <div className="relative">
+        <Input
+          id="school_name"
+          type="text"
+          placeholder="Select or type school name"
+          value={value}
+          onChange={(e) => {
+            onChange(e.target.value);
+            setIsOpen(true);
+          }}
+          onFocus={() => setIsOpen(true)}
+          className="pr-8"
+        />
+        <button
+          type="button"
+          tabIndex={-1}
+          onClick={() => setIsOpen((prev) => !prev)}
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer"
+        >
+          <ChevronDown className={`size-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+        </button>
+      </div>
+
+      {isOpen && filteredSchools.length > 0 && (
+        <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-44 overflow-y-auto rounded-md border border-[#841844]/20 bg-white p-1 shadow-lg animate-in fade-in-0 zoom-in-95">
+          {filteredSchools.map((school, idx) => (
+            <div
+              key={idx}
+              className={`px-3 py-2 text-sm rounded-md cursor-pointer transition-colors ${
+                value === school
+                  ? "bg-[#841844] text-white font-medium"
+                  : "text-gray-800 hover:bg-[#841844]/10 hover:text-[#841844]"
+              }`}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                onChange(school);
+                setIsOpen(false);
+              }}
+            >
+              {school}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ImprovedPersonalityTest() {
   const [selectedTest, setSelectedTest] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -315,11 +386,19 @@ export default function ImprovedPersonalityTest() {
                 ["name", "Name", "text"], ["dob", "DOB", "date"], ["class", "Class", "text"], ["email", "Email", "email"],
                 ["father_name", "Father Name", "text"], ["phone", "Phone", "text"], ["school_name", "School Name", "text"], ["state", "State", "text"], ["city", "City", "text"]
               ].map(([key, label, type]) => (
-                <div key={key} className="space-y-1">
-                  <Label htmlFor={key}>{label}</Label>
-                  <Input id={key} type={type} value={userInfo[key]} onChange={(e) => setUserInfo({ ...userInfo, [key]: e.target.value })} list={key === "school_name" ? "school-list" : undefined} />
-                  {key === "school_name" && <datalist id="school-list">{schools.map((school, idx) => <option key={idx} value={school} />)}</datalist>}
-                </div>
+                key === "school_name" ? (
+                  <SchoolSelect
+                    key={key}
+                    value={userInfo.school_name}
+                    onChange={(val) => setUserInfo({ ...userInfo, school_name: val })}
+                    schools={schools}
+                  />
+                ) : (
+                  <div key={key} className="space-y-1">
+                    <Label htmlFor={key}>{label}</Label>
+                    <Input id={key} type={type} value={userInfo[key]} onChange={(e) => setUserInfo({ ...userInfo, [key]: e.target.value })} />
+                  </div>
+                )
               ))}
               <div className="space-y-1"><Label>Gender</Label><Select value={userInfo.gender} onValueChange={(value) => setUserInfo({ ...userInfo, gender: value })}><SelectTrigger><SelectValue placeholder="Select gender" /></SelectTrigger><SelectContent>{selectFields.gender.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}</SelectContent></Select></div>
             </div>

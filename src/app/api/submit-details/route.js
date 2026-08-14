@@ -1,13 +1,7 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 import nodemailer from 'nodemailer';
-
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
-  auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
-});
+import { generateAssessmentEmailHtml } from '@/lib/emailTemplate';
 
 let schemaReady;
 
@@ -109,25 +103,34 @@ export async function POST(request) {
       );
     }
 
-    if (process.env.EMAIL_USER && process.env.EMAIL_PASS && submission.email) {
-      const result = typeof submission.result === 'object' ? submission.result : null;
-      const resultTitle = result?.title || result?.typeName || submission.test_name;
-      const resultDescription = result?.description || '';
-      const extra = result?.type ? `<p><strong>Profile:</strong> ${escapeHtml(result.type)}${result.typeName ? ` — ${escapeHtml(result.typeName)}` : ''}</p>` :
-        result?.primaryRole ? `<p><strong>Primary Team Role:</strong> ${escapeHtml(result.primaryRole.name)}<br/><strong>Secondary Team Role:</strong> ${escapeHtml(result.secondaryRole?.name)}</p>` :
-        result?.dominantNeed ? `<p><strong>Dominant Motivation:</strong> ${escapeHtml(result.dominantNeed.name)}<br/><strong>Secondary Motivation:</strong> ${escapeHtml(result.secondaryNeed?.name)}</p>` : '';
+    const emailUser = process.env.EMAIL_USER?.trim();
+    const emailPass = process.env.EMAIL_PASS?.trim();
 
-      const htmlTemplate = `<!DOCTYPE html><html><head><meta charset="UTF-8" /></head><body style="font-family:Arial,sans-serif;background:#f9f9f9;padding:20px;"><table style="max-width:650px;margin:auto;background:#fff;border-radius:8px;padding:20px;border:1px solid #e0e0e0" cellpadding="0" cellspacing="0"><tr><td><h2 style="color:#841844">Your Geeta Personality Test Result</h2><p>Dear ${escapeHtml(submission.name)},</p><p>Your assessment has been completed successfully.</p><table width="100%" cellpadding="8" cellspacing="0"><tr><td><strong>Test</strong></td><td>${escapeHtml(submission.test_name)}</td></tr><tr><td><strong>Score</strong></td><td style="font-size:28px;color:#841844;font-weight:bold">${escapeHtml(submission.score)}</td></tr><tr><td><strong>Result</strong></td><td>${escapeHtml(resultTitle)}</td></tr></table>${extra}<p style="line-height:1.6;color:#444">${escapeHtml(resultDescription)}</p><p style="font-size:13px;color:#888;margin-top:20px">Thank you for participating. — Geeta Personality Portal</p></td></tr></table></body></html>`;
+    if (!emailUser || !emailPass) {
+      console.warn('⚠️ [Email] Skipped sending email: EMAIL_USER or EMAIL_PASS is missing from .env/.env.local');
+    } else if (!submission.email) {
+      console.warn('⚠️ [Email] Skipped sending email: No recipient email provided in submission');
+    } else {
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: { user: emailUser, pass: emailPass }
+      });
+
+      const htmlTemplate = generateAssessmentEmailHtml(submission);
 
       try {
-        await transporter.sendMail({
-          from: `"Geeta Personality Portal" <${process.env.EMAIL_USER}>`,
+        console.log(`📧 [Email] Sending assessment report to: ${submission.email}`);
+        const mailInfo = await transporter.sendMail({
+          from: `"Geeta Personality Portal" <${emailUser}>`,
           to: submission.email,
-          subject: `Your ${submission.test_name} Result`,
+          subject: `Your ${submission.test_name || 'Assessment'} Complete Report - Geeta Personality Portal`,
           html: htmlTemplate
         });
+        console.log(`✅ [Email] Email sent successfully to ${submission.email}. Message ID: ${mailInfo.messageId}`);
       } catch (mailError) {
-        console.error('Error sending email:', mailError);
+        console.error('❌ [Email] Error sending email via SMTP:', mailError);
       }
     }
 

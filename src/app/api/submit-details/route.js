@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
-import nodemailer from 'nodemailer';
 import { generateAssessmentEmailHtml } from '@/lib/emailTemplate';
+import { queueEmail } from '@/lib/emailQueue';
 
 let schemaReady;
 
@@ -103,35 +103,18 @@ export async function POST(request) {
       );
     }
 
-    const emailUser = process.env.EMAIL_USER?.trim();
-    const emailPass = process.env.EMAIL_PASS?.trim();
-
-    if (!emailUser || !emailPass) {
-      console.warn('⚠️ [Email] Skipped sending email: EMAIL_USER or EMAIL_PASS is missing from .env/.env.local');
-    } else if (!submission.email) {
-      console.warn('⚠️ [Email] Skipped sending email: No recipient email provided in submission');
-    } else {
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: { user: emailUser, pass: emailPass }
-      });
-
+    if (submission.email) {
+      const emailUser = process.env.EMAIL_USER?.trim();
       const htmlTemplate = generateAssessmentEmailHtml(submission);
+      const mailOptions = {
+        from: `"Geeta Personality Portal" <${emailUser || 'noreply@geeta.edu.in'}>`,
+        to: submission.email,
+        subject: `Your ${submission.test_name || 'Assessment'} Complete Report - Geeta Personality Portal`,
+        html: htmlTemplate,
+      };
 
-      try {
-        console.log(`📧 [Email] Sending assessment report to: ${submission.email}`);
-        const mailInfo = await transporter.sendMail({
-          from: `"Geeta Personality Portal" <${emailUser}>`,
-          to: submission.email,
-          subject: `Your ${submission.test_name || 'Assessment'} Complete Report - Geeta Personality Portal`,
-          html: htmlTemplate
-        });
-        console.log(`✅ [Email] Email sent successfully to ${submission.email}. Message ID: ${mailInfo.messageId}`);
-      } catch (mailError) {
-        console.error('❌ [Email] Error sending email via SMTP:', mailError);
-      }
+      // Non-blocking queue: pushes to queue so API returns instantly without crashing under load
+      queueEmail(submission.email, mailOptions);
     }
 
     return NextResponse.json({ success: true, submissionId }, { status: 201 });

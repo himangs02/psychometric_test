@@ -186,12 +186,12 @@ function SchoolSelect({ value, onChange, schools }) {
 
   return (
     <div className="space-y-1 relative" ref={containerRef}>
-      <Label htmlFor="school_name">School Name</Label>
+      <Label htmlFor="school_name">University Name</Label>
       <div className="relative">
         <Input
           id="school_name"
           type="text"
-          placeholder="Select or type school name"
+          placeholder="Select or type university name"
           value={value}
           onChange={(e) => {
             onChange(e.target.value);
@@ -383,8 +383,8 @@ export default function ImprovedPersonalityTest() {
             <h2 className="text-xl font-bold text-[#841844]">Fill Your Details Before Starting the Test</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {[
-                ["name", "Name", "text"], ["dob", "DOB", "date"], ["class", "Class", "text"], ["email", "Email", "email"],
-                ["father_name", "Father Name", "text"], ["phone", "Phone", "text"], ["school_name", "School Name", "text"], ["state", "State", "text"], ["city", "City", "text"]
+                ["name", "Name", "text"], ["dob", "DOB", "date"], ["class", "Department Name", "text"], ["email", "Email", "email"],
+                ["father_name", "Father Name", "text"], ["phone", "Phone", "text"], ["school_name", "University Name", "text"], ["state", "State", "text"], ["city", "City", "text"]
               ].map(([key, label, type]) => (
                 key === "school_name" ? (
                   <SchoolSelect

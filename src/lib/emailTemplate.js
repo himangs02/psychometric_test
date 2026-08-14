@@ -290,8 +290,8 @@ export function generateAssessmentEmailHtml(submission) {
     ['Candidate Name', candidateName],
     ['Email', submission.email],
     ['Phone', submission.phone],
-    ['School / Institution', submission.institution],
-    ['Class / Course', submission.course],
+    ['University / Institution', submission.institution],
+    ['Department / Course', submission.course],
     ['Father\'s Name', submission.occupation],
     ['City / State', [submission.city, submission.state].filter(Boolean).join(', ')],
   ].filter(([_, val]) => Boolean(val && String(val).trim()));

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Geeta Personality Test",
-  description: "Geeta Personality Portal",
+  title: "Geeta Personality Portal | Psychometric Assessments",
+  description: "Scientifically backed psychometric assessments by Geeta University to discover your strengths and career pathways.",
 };
 
 export default function RootLayout({ children }) {

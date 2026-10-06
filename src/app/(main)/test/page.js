@@ -7,9 +7,26 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { TESTS } from "@/data";
 import { Input } from "@/components/ui/input";
-import { ChevronDown } from "lucide-react";
+import { TESTS } from "@/data";
+import { MultiStepLoader } from "@/components/ui/multi-step-loader";
+import {
+  ChevronDown,
+  ArrowRight,
+  ArrowLeft,
+  Sparkles,
+  CheckCircle2,
+  FileCheck2,
+  BrainCircuit,
+  Award,
+  BookOpen,
+  User,
+  GraduationCap,
+  Printer,
+  Home,
+  ShieldCheck,
+  Check,
+} from "lucide-react";
 import axios from "axios";
 
 const selectFields = {
@@ -20,39 +37,51 @@ const selectFields = {
   ],
 };
 
+const assessmentLoadingStates = [
+  { text: "Processing your responses..." },
+  { text: "Calculating psychometric dimensions..." },
+  { text: "Mapping behavioral archetypes..." },
+  { text: "Generating personalized growth insights..." },
+];
+
 function ResultContent({ testKey, resultDetails, score }) {
   if (!resultDetails) return null;
 
   if (testKey === "belbin") {
     return (
-      <div className="space-y-5">
+      <div className="space-y-6 pt-2">
         <div className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-lg border border-[#841844]/20 bg-[#841844]/5 p-5 text-center">
-            <p className="text-sm text-gray-500">Primary Role</p>
-            <p className="text-2xl font-bold text-[#841844]">{resultDetails.primaryRole?.name}</p>
-            <p className="text-3xl font-black text-[#841844]">{resultDetails.primaryRole?.score}</p>
+          <div className="rounded-2xl border border-[#4F46E5]/20 bg-gradient-to-br from-[#EEF2FF] to-white dark:from-[#4F46E5]/10 dark:to-transparent p-6 text-center shadow-xs">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#667085] dark:text-[#98A2B3]">Primary Role</span>
+            <p className="text-2xl font-black text-[#4F46E5] dark:text-[#A5B4FC] mt-1">{resultDetails.primaryRole?.name}</p>
+            <p className="text-4xl font-black text-[#111827] dark:text-white mt-1 font-mono">{resultDetails.primaryRole?.score}</p>
           </div>
-          <div className="rounded-lg border border-[#841844]/20 bg-[#841844]/5 p-5 text-center">
-            <p className="text-sm text-gray-500">Secondary Role</p>
-            <p className="text-2xl font-bold text-[#841844]">{resultDetails.secondaryRole?.name}</p>
-            <p className="text-3xl font-black text-[#841844]">{resultDetails.secondaryRole?.score}</p>
+          <div className="rounded-2xl border border-[#E5E7EB] dark:border-white/10 bg-[#F8F9FC] dark:bg-[#111827]/50 p-6 text-center shadow-xs">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#667085] dark:text-[#98A2B3]">Secondary Role</span>
+            <p className="text-2xl font-black text-[#111827] dark:text-white mt-1">{resultDetails.secondaryRole?.name}</p>
+            <p className="text-4xl font-black text-[#667085] dark:text-[#98A2B3] mt-1 font-mono">{resultDetails.secondaryRole?.score}</p>
           </div>
         </div>
-        <p className="text-gray-700 leading-relaxed">{resultDetails.description}</p>
-        <div className="rounded-lg border p-4 bg-gray-50">
-          <h3 className="font-bold text-[#841844] mb-3">Complete Team Role Profile</h3>
+
+        <p className="text-[#111827] dark:text-slate-300 leading-relaxed text-sm sm:text-base">{resultDetails.description}</p>
+
+        <div className="rounded-2xl border border-[#E5E7EB] dark:border-white/10 p-5 bg-[#F8F9FC] dark:bg-[#111827]/50 space-y-3">
+          <h3 className="font-bold text-[#4F46E5] dark:text-[#A5B4FC] text-sm flex items-center gap-2 uppercase tracking-wider">
+            <Award className="w-4 h-4" />
+            <span>Complete Team Role Profile</span>
+          </h3>
           <div className="space-y-3">
             {resultDetails.roleDetails?.map((role, index) => (
-              <div key={role.id} className={`rounded-lg border bg-white p-4 ${index < 2 ? "border-[#841844]/40" : ""}`}>
+              <div key={role.id} className={`rounded-xl border bg-white dark:bg-[#111827] p-4 shadow-xs ${index < 2 ? "border-[#4F46E5]/40" : "border-[#E5E7EB] dark:border-white/10"}`}>
                 <div className="flex justify-between gap-3 items-center">
-                  <div>
-                    <span className="font-semibold text-[#841844]">{index + 1}. {role.name}</span>
-                    {index === 0 && <span className="ml-2 text-xs rounded-full bg-[#841844] text-white px-2 py-1">Primary</span>}
-                    {index === 1 && <span className="ml-2 text-xs rounded-full bg-gray-200 text-gray-700 px-2 py-1">Secondary</span>}
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-[#111827] dark:text-white text-sm">{index + 1}. {role.name}</span>
+                    {index === 0 && <span className="text-[10px] font-bold rounded-full bg-[#4F46E5] text-white px-2.5 py-0.5">Primary</span>}
+                    {index === 1 && <span className="text-[10px] font-bold rounded-full bg-[#EEF2FF] dark:bg-white/10 text-[#4F46E5] dark:text-[#A5B4FC] px-2.5 py-0.5">Secondary</span>}
                   </div>
-                  <span className="font-bold">{role.score}</span>
+                  <span className="font-mono font-bold text-base text-[#4F46E5] dark:text-[#A5B4FC]">{role.score}</span>
                 </div>
-                <div className="grid md:grid-cols-3 gap-3 mt-3 text-sm text-gray-600">
+                <div className="grid md:grid-cols-3 gap-3 mt-3 text-xs text-[#667085] dark:text-[#98A2B3]">
                   <div><strong>Function:</strong> {role.function}</div>
                   <div><strong>Strength:</strong> {role.strength}</div>
                   <div><strong>Watch-out:</strong> {role.weakness}</div>
@@ -68,24 +97,26 @@ function ResultContent({ testKey, resultDetails, score }) {
 
   if (testKey === "mcclelland") {
     return (
-      <div className="space-y-5">
-        <div className="rounded-lg bg-[#841844]/5 border border-[#841844]/20 p-5 text-center">
-          <p className="text-sm text-gray-500">Dominant Motivational Need</p>
-          <p className="text-3xl font-black text-[#841844]">{resultDetails.dominantNeed?.name}</p>
-          <p className="text-gray-600 mt-1">Secondary: {resultDetails.secondaryNeed?.name}</p>
+      <div className="space-y-6 pt-2">
+        <div className="rounded-2xl bg-gradient-to-br from-[#EEF2FF] to-white dark:from-[#4F46E5]/10 dark:to-transparent border border-[#4F46E5]/20 p-6 text-center shadow-xs">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#667085] dark:text-[#98A2B3]">Dominant Motivational Need</span>
+          <p className="text-3xl sm:text-4xl font-black text-[#4F46E5] dark:text-[#A5B4FC] mt-1">{resultDetails.dominantNeed?.name}</p>
+          <p className="text-xs font-semibold text-[#667085] dark:text-[#98A2B3] mt-1">Secondary Need: {resultDetails.secondaryNeed?.name}</p>
         </div>
-        <p className="text-gray-700 leading-relaxed">{resultDetails.description}</p>
+        <p className="text-[#111827] dark:text-slate-300 leading-relaxed text-sm sm:text-base">{resultDetails.description}</p>
         <div className="grid md:grid-cols-3 gap-4">
           {resultDetails.motivationDetails?.map((item) => (
-            <div key={item.id} className="rounded-lg border bg-white p-4">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-bold text-[#841844]">{item.name}</h3>
-                <span className="font-bold">{item.score}/40</span>
+            <div key={item.id} className="rounded-2xl border border-[#E5E7EB] dark:border-white/10 bg-white dark:bg-[#111827] p-5 shadow-xs flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="font-bold text-[#111827] dark:text-white text-sm">{item.name}</h3>
+                  <span className="font-mono font-bold text-[#4F46E5] dark:text-[#A5B4FC]">{item.score}/40</span>
+                </div>
+                <div className="h-2 rounded-full bg-[#F1F5F9] dark:bg-white/10 overflow-hidden mb-3">
+                  <div className="h-full bg-gradient-to-r from-[#4F46E5] to-[#06B6D4] rounded-full" style={{ width: `${item.percentage}%` }} />
+                </div>
+                <p className="text-xs text-[#667085] dark:text-[#98A2B3] leading-relaxed">{item.description}</p>
               </div>
-              <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
-                <div className="h-full bg-[#841844]" style={{ width: `${item.percentage}%` }} />
-              </div>
-              <p className="text-sm text-gray-600 mt-3">{item.description}</p>
             </div>
           ))}
         </div>
@@ -96,23 +127,29 @@ function ResultContent({ testKey, resultDetails, score }) {
 
   if (testKey === "mbti") {
     return (
-      <div className="space-y-5">
-        <div className="rounded-lg bg-[#841844]/5 border border-[#841844]/20 p-6 text-center">
-          <p className="text-sm text-gray-500">Your 4-Letter Personality Profile</p>
-          <p className="text-6xl font-black tracking-widest text-[#841844]">{resultDetails.type}</p>
-          <p className="text-xl font-semibold mt-2">{resultDetails.typeName}</p>
+      <div className="space-y-6 pt-2">
+        <div className="rounded-2xl bg-gradient-to-br from-[#EEF2FF] to-white dark:from-[#4F46E5]/10 dark:to-transparent border border-[#4F46E5]/20 p-7 text-center shadow-xs">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#667085] dark:text-[#98A2B3]">Your 4-Letter Personality Profile</span>
+          <p className="text-5xl sm:text-6xl font-black tracking-widest text-[#4F46E5] dark:text-[#A5B4FC] mt-2 font-mono">{resultDetails.type}</p>
+          <p className="text-base sm:text-lg font-bold text-[#111827] dark:text-white mt-1">{resultDetails.typeName}</p>
         </div>
-        <p className="text-gray-700 leading-relaxed text-center">{resultDetails.description}</p>
+        <p className="text-[#111827] dark:text-slate-300 leading-relaxed text-center max-w-2xl mx-auto text-sm sm:text-base">{resultDetails.description}</p>
         <div className="grid sm:grid-cols-2 gap-4">
           {resultDetails.dimensionScores?.map((d) => (
-            <div key={d.dimension} className="rounded-lg border p-4 bg-gray-50">
-              <div className="flex justify-between items-center">
-                <span className="font-bold text-[#841844]">{d.dimension}</span>
-                <span className="text-sm font-semibold">Preference: {d.preference}</span>
+            <div key={d.dimension} className="rounded-2xl border border-[#E5E7EB] dark:border-white/10 p-5 bg-[#F8F9FC] dark:bg-[#111827]/50">
+              <div className="flex justify-between items-center mb-3">
+                <span className="font-bold text-[#4F46E5] dark:text-[#A5B4FC] text-sm">{d.dimension}</span>
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-[#EEF2FF] dark:bg-white/10 text-[#4F46E5] dark:text-[#A5B4FC]">Prefers {d.preference}</span>
               </div>
-              <div className="grid grid-cols-2 gap-2 mt-3 text-center">
-                <div className={`rounded p-2 ${d.preference === d.left ? "bg-[#841844] text-white" : "bg-white border"}`}><div className="font-bold">{d.left}</div><div className="text-sm">{d.leftScore}</div></div>
-                <div className={`rounded p-2 ${d.preference === d.right ? "bg-[#841844] text-white" : "bg-white border"}`}><div className="font-bold">{d.right}</div><div className="text-sm">{d.rightScore}</div></div>
+              <div className="grid grid-cols-2 gap-2 text-center">
+                <div className={`rounded-xl p-2.5 transition-colors ${d.preference === d.left ? "bg-[#4F46E5] text-white shadow-xs font-bold" : "bg-white dark:bg-[#111827] border border-[#E5E7EB] dark:border-white/10 text-[#667085] dark:text-slate-400"}`}>
+                  <div className="text-[10px] uppercase font-bold">{d.left}</div>
+                  <div className="text-sm font-black mt-0.5 font-mono">{d.leftScore}</div>
+                </div>
+                <div className={`rounded-xl p-2.5 transition-colors ${d.preference === d.right ? "bg-[#4F46E5] text-white shadow-xs font-bold" : "bg-white dark:bg-[#111827] border border-[#E5E7EB] dark:border-white/10 text-[#667085] dark:text-slate-400"}`}>
+                  <div className="text-[10px] uppercase font-bold">{d.right}</div>
+                  <div className="text-sm font-black mt-0.5 font-mono">{d.rightScore}</div>
+                </div>
               </div>
             </div>
           ))}
@@ -124,31 +161,37 @@ function ResultContent({ testKey, resultDetails, score }) {
 
   if (resultDetails.breakdown) {
     return (
-      <div className="space-y-5">
+      <div className="space-y-6 pt-2">
         <div className="space-y-3">
+          <h3 className="font-bold text-[#111827] dark:text-white text-xs uppercase tracking-wider">Top Dimensional Strengths</h3>
           {resultDetails.breakdown.slice(0, 3).map((cat, index) => (
-            <div key={cat.id || cat.name} className="rounded-lg border bg-gray-50 p-4 flex items-center justify-between">
-              <span className="font-semibold text-[#841844]">{index + 1}. {cat.name}</span>
-              <span className="font-bold">{cat.score}</span>
+            <div key={cat.id || cat.name} className="rounded-2xl border border-[#E5E7EB] dark:border-white/10 bg-white dark:bg-[#111827] p-4 flex items-center justify-between shadow-xs">
+              <span className="font-bold text-[#111827] dark:text-white text-sm">{index + 1}. {cat.name}</span>
+              <span className="font-mono font-black text-lg text-[#4F46E5] dark:text-[#A5B4FC]">{cat.score}</span>
             </div>
           ))}
         </div>
-        <p className="text-gray-700 leading-relaxed">{resultDetails.description}</p>
+        <p className="text-[#111827] dark:text-slate-300 leading-relaxed text-sm sm:text-base">{resultDetails.description}</p>
         <Suggestions suggestions={resultDetails.suggestions} />
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5 pt-2">
       {typeof resultDetails === "string" ? (
-        <p className="text-xl font-semibold text-[#841844] text-center">{resultDetails}</p>
+        <p className="text-xl font-bold text-[#4F46E5] dark:text-[#A5B4FC] text-center">{resultDetails}</p>
       ) : (
         <>
-          {score !== null && <p className="font-bold text-[#841844] text-center text-5xl">{score}</p>}
-          <p className="text-gray-700 leading-relaxed text-center font-medium">{resultDetails.description}</p>
-          {resultDetails.studentProfile && <InfoBox title="Student Profile" text={resultDetails.studentProfile} />}
-          {resultDetails.goal && <InfoBox title="Goal" text={resultDetails.goal} />}
+          {score !== null && (
+            <div className="text-center py-4">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#667085] dark:text-[#98A2B3]">Overall Standardized Score</span>
+              <p className="font-black text-[#4F46E5] dark:text-[#A5B4FC] text-5xl sm:text-6xl mt-1 tracking-tight font-mono">{score}</p>
+            </div>
+          )}
+          <p className="text-[#111827] dark:text-slate-300 leading-relaxed text-center font-medium text-sm sm:text-base max-w-xl mx-auto">{resultDetails.description}</p>
+          {resultDetails.studentProfile && <InfoBox title="Student Profile Summary" text={resultDetails.studentProfile} />}
+          {resultDetails.goal && <InfoBox title="Recommended Action Goal" text={resultDetails.goal} />}
           <Suggestions suggestions={resultDetails.suggestions} />
         </>
       )}
@@ -157,12 +200,26 @@ function ResultContent({ testKey, resultDetails, score }) {
 }
 
 function InfoBox({ title, text }) {
-  return <div className="bg-gray-50 p-4 rounded-md border"><h4 className="font-semibold text-[#841844]">{title}</h4><p className="text-gray-700 mt-1">{text}</p></div>;
+  return (
+    <div className="bg-[#F8F9FC] dark:bg-[#111827]/50 p-5 rounded-2xl border border-[#E5E7EB] dark:border-white/10 space-y-1">
+      <h4 className="font-bold text-[#4F46E5] dark:text-[#A5B4FC] text-xs uppercase tracking-wider">{title}</h4>
+      <p className="text-[#111827] dark:text-slate-300 text-xs sm:text-sm leading-relaxed">{text}</p>
+    </div>
+  );
 }
 
 function Suggestions({ suggestions }) {
   if (!suggestions?.length) return null;
-  return <div className="bg-orange-50 p-4 rounded-lg border border-orange-100"><h4 className="font-semibold text-[#841844] mb-2">Suggestions</h4><ul className="list-disc list-inside text-gray-700 space-y-1">{suggestions.map((s, i) => <li key={i}>{s}</li>)}</ul></div>;
+  return (
+    <div className="bg-[#EEF2FF]/70 dark:bg-[#4F46E5]/10 p-5 rounded-2xl border border-[#4F46E5]/20 space-y-2">
+      <h4 className="font-bold text-[#4F46E5] dark:text-[#A5B4FC] text-xs uppercase tracking-wider flex items-center gap-1.5">
+        <span>Actionable Growth Roadmap</span>
+      </h4>
+      <ul className="list-disc list-inside text-[#111827] dark:text-slate-300 text-xs sm:text-sm space-y-1.5 leading-relaxed">
+        {suggestions.map((s, i) => <li key={i}>{s}</li>)}
+      </ul>
+    </div>
+  );
 }
 
 function SchoolSelect({ value, onChange, schools }) {
@@ -185,41 +242,40 @@ function SchoolSelect({ value, onChange, schools }) {
   }, []);
 
   return (
-    <div className="space-y-1 relative" ref={containerRef}>
-      <Label htmlFor="school_name">University Name</Label>
+    <div className="space-y-1.5 relative" ref={containerRef}>
+      <Label htmlFor="school_name" className="text-[11px] font-bold uppercase tracking-wider text-[#667085] dark:text-[#98A2B3]">University / Institution</Label>
       <div className="relative">
         <Input
           id="school_name"
           type="text"
-          placeholder="Select or type university name"
+          placeholder="Select or type institution name"
           value={value}
           onChange={(e) => {
             onChange(e.target.value);
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
-          className="pr-8"
+          className="pr-8 rounded-xl bg-white dark:bg-[#111827] border-[#E5E7EB] dark:border-white/10 focus:ring-2 focus:ring-[#4F46E5]/30 text-xs sm:text-sm"
         />
         <button
           type="button"
           tabIndex={-1}
           onClick={() => setIsOpen((prev) => !prev)}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer"
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#98A2B3] hover:text-[#111827] focus:outline-none cursor-pointer"
         >
           <ChevronDown className={`size-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
         </button>
       </div>
 
       {isOpen && filteredSchools.length > 0 && (
-        <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-44 overflow-y-auto rounded-md border border-[#841844]/20 bg-white p-1 shadow-lg animate-in fade-in-0 zoom-in-95">
+        <div className="absolute left-0 right-0 top-full mt-1.5 z-50 max-h-48 overflow-y-auto rounded-2xl border border-[#E5E7EB] dark:border-white/10 bg-white dark:bg-[#111827] p-1.5 shadow-xl animate-in fade-in-0 zoom-in-95">
           {filteredSchools.map((school, idx) => (
             <div
               key={idx}
-              className={`px-3 py-2 text-sm rounded-md cursor-pointer transition-colors ${
-                value === school
-                  ? "bg-[#841844] text-white font-medium"
-                  : "text-gray-800 hover:bg-[#841844]/10 hover:text-[#841844]"
-              }`}
+              className={`px-3 py-2 text-xs sm:text-sm rounded-xl cursor-pointer transition-colors ${value === school
+                ? "bg-[#4F46E5] text-white font-medium"
+                : "text-[#111827] dark:text-slate-200 hover:bg-[#EEF2FF] dark:hover:bg-white/5 hover:text-[#4F46E5]"
+                }`}
               onMouseDown={(e) => {
                 e.preventDefault();
                 onChange(school);
@@ -253,7 +309,7 @@ export default function ImprovedPersonalityTest() {
   const test = selectedTest ? TESTS[selectedTest] : null;
   const kind = test?.kind;
   const isSpecial = ["belbin", "mcclelland", "mbti"].includes(selectedTest);
-  const totalSteps = kind === "belbin" ? test.sections.length : test?.questions?.length || 0;
+  const totalSteps = kind === "belbin" ? test?.sections?.length : test?.questions?.length || 0;
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -364,28 +420,75 @@ export default function ImprovedPersonalityTest() {
   };
 
   return (
-    <div className="w-full mx-auto px-4 space-y-6">
+    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-28 pb-16 space-y-8 relative">
+      {/* Multi-Step Loader Overlay during Assessment Submission */}
+      <MultiStepLoader
+        loadingStates={assessmentLoadingStates}
+        loading={submitting}
+        duration={1500}
+        loop={false}
+      />
+
+      {/* Header & Test Selection */}
       {!formSubmitted && (
-        <>
-          <h1 className="text-3xl font-extrabold text-[#841844]">Select a Test</h1>
-          <Select onValueChange={handleTestSelect} value={selectedTest || ""}>
-            <SelectTrigger className="w-full"><SelectValue placeholder="Choose a test" /></SelectTrigger>
-            <SelectContent>
-              {Object.entries(TESTS).map(([key, item]) => <SelectItem key={key} value={key}>{item.title}</SelectItem>)}
-            </SelectContent>
-          </Select>
-        </>
+        <div className="space-y-4 text-center max-w-xl mx-auto">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EEF2FF] dark:bg-[#4F46E5]/10 border border-[#4F46E5]/20 text-[#4F46E5] dark:text-[#A5B4FC] text-[11px] font-bold uppercase tracking-wider">
+
+            <span>Assessment Center</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-black text-[#111827] dark:text-white tracking-tight">
+            Select Your Assessment
+          </h1>
+          <p className="text-xs sm:text-sm text-[#667085] dark:text-[#98A2B3]">
+            Choose an instrument from the catalog below to start your standardized test.
+          </p>
+          <div className="pt-2">
+            <Select onValueChange={handleTestSelect} value={selectedTest || ""}>
+              <SelectTrigger className="w-full h-12 rounded-2xl bg-white dark:bg-[#111827] border-[#E5E7EB] dark:border-white/10 text-xs sm:text-sm font-semibold shadow-xs">
+                <SelectValue placeholder="Choose an assessment to begin..." />
+              </SelectTrigger>
+              <SelectContent className="max-h-72 rounded-2xl bg-white dark:bg-[#111827]">
+                {Object.entries(TESTS).map(([key, item]) => (
+                  <SelectItem key={key} value={key} className="text-xs sm:text-sm font-medium py-2.5">
+                    {item.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       )}
 
+      {/* Candidate Registration Form */}
       {selectedTest && !formSubmitted && (
-        <Card className="w-full border border-[#841844]/40 shadow-md">
-          <CardContent className="p-6 space-y-4">
-            <h2 className="text-xl font-bold text-[#841844]">Fill Your Details Before Starting the Test</h2>
-            <div className="grid sm:grid-cols-2 gap-4">
+        <Card className="w-full rounded-[24px] border border-[#E5E7EB] dark:border-white/10 bg-white/95 dark:bg-[#111827]/95 backdrop-blur-xl shadow-xl overflow-hidden animate-in fade-in-0 slide-in-from-bottom-3 duration-300">
+          <div className="bg-gradient-to-r from-[#0B1020] via-[#1e1b4b] to-[#0B1020] px-6 sm:px-8 py-5 text-white flex items-center justify-between border-b border-white/10">
+            <div className="space-y-0.5">
+              <span className="text-[10px] uppercase font-bold tracking-wider text-[#A5B4FC]">Registration Step</span>
+              <h2 className="text-base sm:text-lg font-black">Candidate Information</h2>
+            </div>
+            <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-[#A5B4FC]">
+              <User className="w-4 h-4" />
+            </div>
+          </div>
+
+          <CardContent className="p-6 sm:p-8 space-y-6">
+            <p className="text-xs sm:text-sm text-[#667085] dark:text-[#98A2B3]">
+              Please enter your details accurately for your verified psychometric scoring and report.
+            </p>
+
+            <div className="grid sm:grid-cols-2 gap-5">
               {[
-                ["name", "Name", "text"], ["dob", "DOB", "date"], ["class", "Department Name", "text"], ["email", "Email", "email"],
-                ["father_name", "Father Name", "text"], ["phone", "Phone", "text"], ["school_name", "University Name", "text"], ["state", "State", "text"], ["city", "City", "text"]
-              ].map(([key, label, type]) => (
+                ["name", "Full Name", "text", "e.g. Rahul Sharma"],
+                ["dob", "Date of Birth", "date", ""],
+                ["class", "Course / Department", "text", "e.g. B.Tech CSE / MBA"],
+                ["email", "Email Address", "email", "e.g. rahul@example.com"],
+                ["father_name", "Father's Name", "text", "e.g. Mr. S. Sharma"],
+                ["phone", "Phone Number", "tel", "e.g. 9876543210"],
+                ["school_name", "University / Institution", "text", ""],
+                ["state", "State", "text", "e.g. Haryana"],
+                ["city", "City", "text", "e.g. Panipat"],
+              ].map(([key, label, type, placeholder]) => (
                 key === "school_name" ? (
                   <SchoolSelect
                     key={key}
@@ -394,74 +497,336 @@ export default function ImprovedPersonalityTest() {
                     schools={schools}
                   />
                 ) : (
-                  <div key={key} className="space-y-1">
-                    <Label htmlFor={key}>{label}</Label>
-                    <Input id={key} type={type} value={userInfo[key]} onChange={(e) => setUserInfo({ ...userInfo, [key]: e.target.value })} />
+                  <div key={key} className="space-y-1.5">
+                    <Label htmlFor={key} className="text-[11px] font-bold uppercase tracking-wider text-[#667085] dark:text-[#98A2B3]">
+                      {label}
+                    </Label>
+                    <Input
+                      id={key}
+                      type={type}
+                      placeholder={placeholder}
+                      value={userInfo[key]}
+                      onChange={(e) => setUserInfo({ ...userInfo, [key]: e.target.value })}
+                      className="rounded-xl bg-white dark:bg-[#111827] border-[#E5E7EB] dark:border-white/10 focus:ring-2 focus:ring-[#4F46E5]/30 text-xs sm:text-sm"
+                    />
                   </div>
                 )
               ))}
-              <div className="space-y-1"><Label>Gender</Label><Select value={userInfo.gender} onValueChange={(value) => setUserInfo({ ...userInfo, gender: value })}><SelectTrigger><SelectValue placeholder="Select gender" /></SelectTrigger><SelectContent>{selectFields.gender.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}</SelectContent></Select></div>
+
+              <div className="space-y-1.5">
+                <Label className="text-[11px] font-bold uppercase tracking-wider text-[#667085] dark:text-[#98A2B3]">
+                  Gender
+                </Label>
+                <Select
+                  value={userInfo.gender}
+                  onValueChange={(value) => setUserInfo({ ...userInfo, gender: value })}
+                >
+                  <SelectTrigger className="rounded-xl bg-white dark:bg-[#111827] border-[#E5E7EB] dark:border-white/10 text-xs sm:text-sm">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl bg-white dark:bg-[#111827]">
+                    {selectFields.gender.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <Button className="bg-[#841844] text-white hover:bg-[#6d1337]" disabled={!userInfo.name || !userInfo.email || !userInfo.phone} onClick={() => setFormSubmitted(true)}>Start Test</Button>
+
+            <div className="pt-3 flex justify-end">
+              <Button
+                className="w-full sm:w-auto px-8 py-3 rounded-full bg-[#4F46E5] text-white hover:bg-[#3730A3] font-bold shadow-[0_10px_24px_-6px_rgba(79,70,229,0.5)] transition-all duration-200 cursor-pointer text-xs sm:text-sm"
+                disabled={!userInfo.name || !userInfo.email || !userInfo.phone}
+                onClick={() => setFormSubmitted(true)}
+              >
+                <span>Start Assessment</span>
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
           </CardContent>
         </Card>
       )}
 
+      {/* Interactive Question Card */}
       {selectedTest && formSubmitted && (
-        <Card className="w-full border border-[#841844]/40 shadow-md">
-          <CardContent className="p-6 space-y-4">
-            <div className="flex justify-between items-center gap-4">
-              <div><div className="text-sm text-muted-foreground">{test.title}</div><div className="text-sm font-medium">{kind === "belbin" ? `Section ${currentIndex + 1} of ${totalSteps}` : `Question ${currentIndex + 1} of ${totalSteps}`}</div></div>
-              <div className="text-sm font-semibold text-[#841844]">{Math.round(((currentIndex + 1) / totalSteps) * 100)}%</div>
+        <Card className="w-full rounded-[24px] border border-[#E5E7EB] dark:border-white/10 bg-white/95 dark:bg-[#111827]/95 backdrop-blur-xl shadow-2xl overflow-hidden animate-in fade-in-0 duration-300">
+          {/* Top Progress Bar */}
+          <div className="px-6 sm:px-8 pt-6 pb-4 border-b border-[#F1F5F9] dark:border-white/5">
+            <div className="flex justify-between items-center gap-4 mb-3">
+              <div>
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#4F46E5] dark:text-[#A5B4FC]">
+                  {test?.title}
+                </span>
+                <div className="text-base sm:text-lg font-black text-[#111827] dark:text-white">
+                  {kind === "belbin"
+                    ? `Section ${currentIndex + 1} of ${totalSteps}`
+                    : `Question ${currentIndex + 1} of ${totalSteps}`}
+                </div>
+              </div>
+              <div className="px-3 py-1 rounded-full bg-[#EEF2FF] dark:bg-[#4F46E5]/10 text-[#4F46E5] dark:text-[#A5B4FC] font-mono font-bold text-xs">
+                {Math.round(((currentIndex + 1) / totalSteps) * 100)}% Completed
+              </div>
             </div>
-            <div className="h-2 bg-gray-100 rounded-full overflow-hidden"><div className="h-full bg-[#841844] transition-all" style={{ width: `${((currentIndex + 1) / totalSteps) * 100}%` }} /></div>
 
+            {/* Visual Progress Track */}
+            <div className="h-1.5 bg-[#F1F5F9] dark:bg-white/10 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-[#4F46E5] to-[#06B6D4] rounded-full transition-all duration-300"
+                style={{ width: `${((currentIndex + 1) / totalSteps) * 100}%` }}
+              />
+            </div>
+          </div>
+
+          <CardContent className="p-6 sm:p-8 space-y-6">
+            {/* Belbin Assessment Section Layout */}
             {kind === "belbin" && (
-              <div className="space-y-5">
-                <div className="rounded-lg bg-gray-50 border p-4"><h2 className="text-lg font-bold text-[#841844]">Section {test.sections[currentIndex].label}</h2><p className="text-gray-600 mt-1">{test.sections[currentIndex].prompt}</p><p className="text-sm font-semibold mt-2">Allocate exactly 10 points across the 8 statements.</p></div>
+              <div className="space-y-6">
+                <div className="rounded-2xl bg-[#EEF2FF]/60 dark:bg-[#4F46E5]/10 border border-[#4F46E5]/20 p-5 space-y-1">
+                  <h2 className="text-base font-bold text-[#4F46E5] dark:text-[#A5B4FC]">
+                    Section {test.sections[currentIndex].label}
+                  </h2>
+                  <p className="text-[#111827] dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
+                    {test.sections[currentIndex].prompt}
+                  </p>
+                  <p className="text-[11px] font-semibold text-[#667085] dark:text-[#98A2B3] pt-1">
+                    Allocate exactly 10 points across the 8 statements (select 1 to 3 statements).
+                  </p>
+                </div>
+
                 <div className="space-y-3">
                   {test.sections[currentIndex].items.map((item, itemIndex) => (
-                    <div key={itemIndex} className="grid grid-cols-[1fr_80px] gap-3 items-center rounded-lg border p-3">
-                      <div><span className="font-semibold text-[#841844] mr-2">{item.number}.</span>{item.text}</div>
-                      <Input type="number" min="0" max="10" step="1" value={answers[currentIndex]?.[itemIndex] ?? 0} onChange={(e) => handleBelbinPoint(currentIndex, itemIndex, e.target.value)} className="text-center" />
+                    <div
+                      key={itemIndex}
+                      className="grid grid-cols-[1fr_90px] gap-4 items-center rounded-2xl border border-[#E5E7EB] dark:border-white/10 p-4 bg-white dark:bg-[#111827] shadow-xs hover:border-[#4F46E5]/40 transition-colors"
+                    >
+                      <div className="text-xs sm:text-sm text-[#111827] dark:text-slate-200 leading-relaxed">
+                        <span className="font-bold text-[#4F46E5] mr-2">
+                          {item.number}.
+                        </span>
+                        {item.text}
+                      </div>
+                      <Input
+                        type="number"
+                        min="0"
+                        max="10"
+                        step="1"
+                        value={answers[currentIndex]?.[itemIndex] ?? 0}
+                        onChange={(e) =>
+                          handleBelbinPoint(currentIndex, itemIndex, e.target.value)
+                        }
+                        className="text-center font-mono font-bold rounded-xl h-10 text-sm"
+                      />
                     </div>
                   ))}
                 </div>
-                <div className={`p-3 rounded-lg border text-center font-bold ${belbinSectionComplete ? "bg-green-50 border-green-200 text-green-700" : "bg-orange-50 border-orange-200 text-orange-700"}`}>Points allocated: {sectionTotal} / 10 · Statements selected: {belbinSelectedCount} / 3</div>
-                {!belbinSectionComplete && <p className="text-sm text-orange-700">Select 1–3 statements and distribute exactly 10 points among them.</p>}
+
+                <div
+                  className={`p-4 rounded-2xl border text-center font-bold text-xs sm:text-sm ${belbinSectionComplete
+                    ? "bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950/30 dark:border-emerald-800 dark:text-emerald-300"
+                    : "bg-amber-50 border-amber-200 text-amber-700 dark:bg-amber-950/30 dark:border-amber-800 dark:text-amber-300"
+                    }`}
+                >
+                  Points allocated: {sectionTotal} / 10 · Statements selected: {belbinSelectedCount} / 3
+                </div>
               </div>
             )}
 
+            {/* MBTI Question Layout */}
             {kind === "mbti" && (() => {
               const question = test.questions[currentIndex];
-              return <div className="space-y-4"><div className="mb-4 font-bold text-xl text-[#841844]">{question.number}. {question.prompt}</div><RadioGroup value={answers[currentIndex] || ""} onValueChange={handleStandardAnswer}>{Object.entries(question.options).map(([key, text]) => <div key={key} className="flex items-start space-x-2 w-full cursor-pointer hover:bg-gray-50 p-3 rounded"><RadioGroupItem value={key} id={`${currentIndex}-${key}`} /><Label className="w-full cursor-pointer leading-relaxed" htmlFor={`${currentIndex}-${key}`}><span className="font-semibold mr-2">{key})</span>{text}</Label></div>)}</RadioGroup></div>;
+              return (
+                <div className="space-y-5">
+                  <div className="text-base sm:text-lg font-bold text-[#111827] dark:text-white leading-relaxed">
+                    <span className="text-[#4F46E5] mr-2">{question.number}.</span>
+                    {question.prompt}
+                  </div>
+                  <RadioGroup
+                    value={answers[currentIndex] || ""}
+                    onValueChange={handleStandardAnswer}
+                    className="space-y-3"
+                  >
+                    {Object.entries(question.options).map(([key, text]) => {
+                      const isSelected = answers[currentIndex] === key;
+                      return (
+                        <div
+                          key={key}
+                          onClick={() => handleStandardAnswer(key)}
+                          className={`flex items-start gap-3.5 p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${isSelected
+                            ? "bg-[#EEF2FF] dark:bg-[#4F46E5]/10 border-[#4F46E5] shadow-xs"
+                            : "bg-white dark:bg-[#111827] border-[#E5E7EB] dark:border-white/10 hover:border-[#C7D2FE] dark:hover:border-[#4F46E5]/40"
+                            }`}
+                        >
+                          <RadioGroupItem value={key} id={`${currentIndex}-${key}`} className="mt-0.5" />
+                          <Label
+                            className="w-full cursor-pointer text-xs sm:text-sm text-[#111827] dark:text-slate-200 leading-relaxed font-normal"
+                            htmlFor={`${currentIndex}-${key}`}
+                          >
+                            <span className="font-bold text-[#4F46E5] mr-2">{key})</span>
+                            {text}
+                          </Label>
+                        </div>
+                      );
+                    })}
+                  </RadioGroup>
+                </div>
+              );
             })()}
 
+            {/* McClelland Motivational Layout */}
             {kind === "mcclelland" && (
-              <div className="space-y-4"><div className="mb-4 font-bold text-xl text-[#841844]">{currentIndex + 1}. {test.questions[currentIndex]}</div><RadioGroup value={answers[currentIndex] !== undefined ? String(answers[currentIndex]) : ""} onValueChange={handleStandardAnswer}>{test.options.map((opt, index) => <div key={index} className="flex items-center space-x-2 w-full cursor-pointer hover:bg-gray-50 p-2 rounded"><RadioGroupItem value={String(5 - index)} id={`${currentIndex}-${index}`} /><Label className="w-full cursor-pointer" htmlFor={`${currentIndex}-${index}`}>{opt}</Label></div>)}</RadioGroup></div>
+              <div className="space-y-5">
+                <div className="text-base sm:text-lg font-bold text-[#111827] dark:text-white leading-relaxed">
+                  <span className="text-[#4F46E5] mr-2">{currentIndex + 1}.</span>
+                  {test.questions[currentIndex]}
+                </div>
+                <RadioGroup
+                  value={answers[currentIndex] !== undefined ? String(answers[currentIndex]) : ""}
+                  onValueChange={handleStandardAnswer}
+                  className="space-y-3"
+                >
+                  {test.options.map((opt, index) => {
+                    const optValue = String(5 - index);
+                    const isSelected = String(answers[currentIndex]) === optValue;
+                    return (
+                      <div
+                        key={index}
+                        onClick={() => handleStandardAnswer(optValue)}
+                        className={`flex items-center gap-3.5 p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${isSelected
+                          ? "bg-[#EEF2FF] dark:bg-[#4F46E5]/10 border-[#4F46E5] shadow-xs"
+                          : "bg-white dark:bg-[#111827] border-[#E5E7EB] dark:border-white/10 hover:border-[#C7D2FE]"
+                          }`}
+                      >
+                        <RadioGroupItem value={optValue} id={`${currentIndex}-${index}`} />
+                        <Label
+                          className="w-full cursor-pointer text-xs sm:text-sm text-[#111827] dark:text-slate-200 font-normal"
+                          htmlFor={`${currentIndex}-${index}`}
+                        >
+                          {opt}
+                        </Label>
+                      </div>
+                    );
+                  })}
+                </RadioGroup>
+              </div>
             )}
 
+            {/* Standard Likert Scale Question Layout */}
             {!isSpecial && (
-              <><div className="mb-4 font-bold text-xl text-[#841844]">{test.questions[currentIndex]}</div><RadioGroup value={answers[currentIndex] || ""} onValueChange={handleStandardAnswer}>{test.options?.map((opt, index) => <div key={index} className="flex items-center space-x-2 w-full cursor-pointer hover:bg-gray-50 p-2 rounded"><RadioGroupItem value={opt} id={`${currentIndex}-${index}`} /><Label className="w-full cursor-pointer" htmlFor={`${currentIndex}-${index}`}>{opt}</Label></div>)}</RadioGroup></>
+              <div className="space-y-5">
+                <div className="text-base sm:text-lg font-bold text-[#111827] dark:text-white leading-relaxed">
+                  <span className="text-[#4F46E5] mr-2">{currentIndex + 1}.</span>
+                  {test?.questions?.[currentIndex]}
+                </div>
+                <RadioGroup
+                  value={answers[currentIndex] || ""}
+                  onValueChange={handleStandardAnswer}
+                  className="space-y-3"
+                >
+                  {test?.options?.map((opt, index) => {
+                    const isSelected = answers[currentIndex] === opt;
+                    return (
+                      <div
+                        key={index}
+                        onClick={() => handleStandardAnswer(opt)}
+                        className={`flex items-center gap-3.5 p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${isSelected
+                          ? "bg-[#EEF2FF] dark:bg-[#4F46E5]/10 border-[#4F46E5] shadow-xs"
+                          : "bg-white dark:bg-[#111827] border-[#E5E7EB] dark:border-white/10 hover:border-[#C7D2FE]"
+                          }`}
+                      >
+                        <RadioGroupItem value={opt} id={`${currentIndex}-${index}`} />
+                        <Label
+                          className="w-full cursor-pointer text-xs sm:text-sm text-[#111827] dark:text-slate-200 font-normal"
+                          htmlFor={`${currentIndex}-${index}`}
+                        >
+                          {opt}
+                        </Label>
+                      </div>
+                    );
+                  })}
+                </RadioGroup>
+              </div>
             )}
 
-            <div className="flex justify-between mt-6">
-              <Button variant="outline" disabled={currentIndex === 0} onClick={() => setCurrentIndex(currentIndex - 1)}>Previous</Button>
+            {/* Navigation & Submission Footer */}
+            <div className="flex items-center justify-between pt-6 border-t border-[#F1F5F9] dark:border-white/5">
+              <Button
+                variant="outline"
+                disabled={currentIndex === 0}
+                onClick={() => setCurrentIndex(currentIndex - 1)}
+                className="rounded-full px-5 h-10 text-xs font-bold"
+              >
+                <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />
+                <span>Previous</span>
+              </Button>
+
               {currentIndex < totalSteps - 1 ? (
-                <Button onClick={() => setCurrentIndex(currentIndex + 1)} disabled={kind === "belbin" ? !belbinSectionComplete : answers[currentIndex] === undefined || answers[currentIndex] === ""}>Next</Button>
+                <Button
+                  onClick={() => setCurrentIndex(currentIndex + 1)}
+                  disabled={
+                    kind === "belbin"
+                      ? !belbinSectionComplete
+                      : answers[currentIndex] === undefined || answers[currentIndex] === ""
+                  }
+                  className="rounded-full px-6 h-10 bg-[#4F46E5] text-white hover:bg-[#3730A3] font-bold text-xs shadow-[0_4px_16px_rgba(79,70,229,0.3)]"
+                >
+                  <span>Next</span>
+                  <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                </Button>
               ) : (
-                <Button className="bg-[#841844] text-white hover:bg-[#6d1337]" onClick={calculateScore} disabled={!allAnswered || submitting}>{submitting ? "Submitting..." : "Submit"}</Button>
+                <Button
+                  className="rounded-full px-8 h-10 bg-[#4F46E5] text-white hover:bg-[#3730A3] font-bold text-xs shadow-[0_4px_16px_rgba(79,70,229,0.4)]"
+                  onClick={calculateScore}
+                  disabled={!allAnswered || submitting}
+                >
+                  {submitting ? "Processing..." : "Submit Assessment"}
+                </Button>
               )}
             </div>
           </CardContent>
         </Card>
       )}
 
+      {/* Result Modal Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="text-left max-w-4xl max-h-[88vh] overflow-y-auto">
-          <DialogHeader><DialogTitle className="text-[#841844] text-center">{test?.title} Result</DialogTitle></DialogHeader>
+        <DialogContent className="text-left max-w-4xl max-h-[88vh] overflow-y-auto rounded-3xl p-6 sm:p-8 bg-white dark:bg-[#111827] border-[#E5E7EB] dark:border-white/10 shadow-2xl">
+          <DialogHeader className="border-b border-[#F1F5F9] dark:border-white/5 pb-4">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <BrainCircuit className="w-6 h-6 text-[#4F46E5]" />
+              <DialogTitle className="text-xl sm:text-2xl font-black text-[#111827] dark:text-white text-center">
+                {test?.title} • Official Report
+              </DialogTitle>
+            </div>
+            <p className="text-xs text-center text-[#667085] dark:text-[#98A2B3]">
+              Center for Psychometric Assessment & Research • Geeta University
+            </p>
+          </DialogHeader>
+
           <ResultContent testKey={selectedTest} resultDetails={resultDetails} score={score} />
-          <div className="text-center pt-2"><Button className="bg-[#841844] hover:bg-[#6d1337] text-white" onClick={() => { setOpen(false); window.location.href = "/"; }}>Close Result</Button></div>
+
+          <div className="text-center pt-6 border-t border-[#F1F5F9] dark:border-white/5 flex flex-wrap items-center justify-center gap-3">
+            <Button
+              className="rounded-full px-6 bg-[#4F46E5] hover:bg-[#3730A3] text-white font-bold text-xs"
+              onClick={() => {
+                setOpen(false);
+                window.location.href = "/";
+              }}
+            >
+              <Home className="w-3.5 h-3.5 mr-1.5" />
+              <span>Back to Home</span>
+            </Button>
+            <Button
+              variant="outline"
+              className="rounded-full px-6 text-xs font-bold"
+              onClick={() => {
+                window.print();
+              }}
+            >
+              <Printer className="w-3.5 h-3.5 mr-1.5" />
+              <span>Print Report</span>
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

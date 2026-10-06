@@ -1,46 +1,36 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
+import React, { useState } from "react";
+import { Navbar } from "@/components/navigation/Navbar";
+import { Footer } from "@/components/footer/Footer";
+import { BackgroundEffect } from "@/components/ui/BackgroundEffect";
+import { FluidLoader } from "@/components/ui/FluidLoader";
 
 export default function LayoutWrapper({ children }) {
-  return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
-      {/* Header */}
-      <header className="w-full border-b p-4 flex justify-between items-center">
-        <Link href="/" className="text-xl font-extrabold text-[#841844] hover:opacity-80 transition">
-          Psychometric Test Portal
-        </Link>
-        <div className="flex justify-end gap-6 text-sm">
-          <Link
-            href="/"
-            className="font-medium hover:text-[#841844] transition"
-          >
-            Home
-          </Link>
-          <Link
-            href="/test"
-            className="font-medium hover:text-[#841844] transition"
-          >
-            Tests
-          </Link>
-        </div>
-      </header>
+  const [initialLoading, setInitialLoading] = useState(true);
 
-      {/* Main Content */}
-      <main className="flex-1 w-full max-w-5xl mx-auto py-10 px-6">
+  return (
+    <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-[#4F46E5]/15 selection:text-[#4F46E5] relative">
+      {/* 1. Fluid Liquid Intelligence Initial Page Loader */}
+      {initialLoading && (
+        <FluidLoader minDuration={1400} onComplete={() => setInitialLoading(false)} />
+      )}
+
+      {/* 2. Ambient background visual layers */}
+      <BackgroundEffect />
+
+      {/* 3. Modern Floating Header */}
+      <Navbar />
+
+      {/* 4. Main Content Area */}
+      <main className="flex-1 w-full flex flex-col">
         {children}
       </main>
 
-      <Separator />
-
-      {/* Footer */}
-      <footer className="p-4 text-center sm:text-right text-sm text-muted-foreground">
-        Made with ❤️ by <span className="font-medium text-[#841844]">
-          <a href="https://geetauniversity.edu.in/edge/gth" style={{textDecoration: "none"}}>Geeta Technical Hub</a>
-          </span>
-      </footer>
+      {/* 5. Sleek University Footer */}
+      <Footer />
     </div>
   );
 }
+
+

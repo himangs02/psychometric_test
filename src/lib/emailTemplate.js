@@ -16,7 +16,7 @@ function renderSuggestions(suggestions) {
 
   return `
     <div style="margin-top: 24px; background-color: #fffaf0; border: 1px solid #fed7aa; border-radius: 8px; padding: 16px 20px;">
-      <h4 style="margin: 0 0 10px 0; color: #841844; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+      <h4 style="margin: 0 0 10px 0; color: #4F46E5; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
         💡 Recommendations &amp; Suggestions
       </h4>
       <ul style="margin: 0; padding-left: 20px;">
@@ -29,8 +29,8 @@ function renderSuggestions(suggestions) {
 function renderInfoBox(title, content) {
   if (!content) return '';
   return `
-    <div style="margin-top: 16px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-left: 4px solid #841844; border-radius: 6px; padding: 14px 18px;">
-      <h4 style="margin: 0 0 6px 0; color: #841844; font-size: 14px; font-weight: 700;">${escapeHtml(title)}</h4>
+    <div style="margin-top: 16px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-left: 4px solid #4F46E5; border-radius: 6px; padding: 14px 18px;">
+      <h4 style="margin: 0 0 6px 0; color: #4F46E5; font-size: 14px; font-weight: 700;">${escapeHtml(title)}</h4>
       <p style="margin: 0; color: #374151; font-size: 14px; line-height: 1.6;">${escapeHtml(content)}</p>
     </div>
   `;
@@ -47,7 +47,7 @@ function renderBelbinResult(result) {
     const isPrimary = index === 0;
     const isSecondary = index === 1;
     const badge = isPrimary
-      ? '<span style="display:inline-block; margin-left:8px; background-color:#841844; color:#ffffff; font-size:11px; font-weight:600; padding:2px 8px; border-radius:12px;">Primary</span>'
+      ? '<span style="display:inline-block; margin-left:8px; background-color:#4F46E5; color:#ffffff; font-size:11px; font-weight:600; padding:2px 8px; border-radius:12px;">Primary</span>'
       : isSecondary
         ? '<span style="display:inline-block; margin-left:8px; background-color:#e5e7eb; color:#374151; font-size:11px; font-weight:600; padding:2px 8px; border-radius:12px;">Secondary</span>'
         : '';
@@ -59,7 +59,7 @@ function renderBelbinResult(result) {
       <div style="margin-bottom: 12px; border-radius: 8px; padding: 14px 16px; ${borderStyle} ${bgStyle}">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f3f4f6; padding-bottom: 8px; margin-bottom: 8px;">
           <div>
-            <strong style="color: #841844; font-size: 15px;">${index + 1}. ${escapeHtml(role.name)}</strong>
+            <strong style="color: #4F46E5; font-size: 15px;">${index + 1}. ${escapeHtml(role.name)}</strong>
             ${badge}
           </div>
           <div style="font-size: 16px; font-weight: 700; color: #111827;">${escapeHtml(role.score)} pts</div>
@@ -80,16 +80,16 @@ function renderBelbinResult(result) {
         <td width="48%" style="vertical-align: top;">
           <div style="background-color: #fff5f7; border: 1px solid rgba(132, 24, 68, 0.2); border-radius: 8px; padding: 16px; text-align: center;">
             <div style="font-size: 12px; text-transform: uppercase; color: #6b7280; font-weight: 600; margin-bottom: 4px;">Primary Role</div>
-            <div style="font-size: 20px; font-weight: 700; color: #841844; margin-bottom: 4px;">${escapeHtml(primaryName)}</div>
-            <div style="font-size: 26px; font-weight: 900; color: #841844;">${escapeHtml(primaryScore)}</div>
+            <div style="font-size: 20px; font-weight: 700; color: #4F46E5; margin-bottom: 4px;">${escapeHtml(primaryName)}</div>
+            <div style="font-size: 26px; font-weight: 900; color: #4F46E5;">${escapeHtml(primaryScore)}</div>
           </div>
         </td>
         <td width="4%"></td>
         <td width="48%" style="vertical-align: top;">
           <div style="background-color: #fff5f7; border: 1px solid rgba(132, 24, 68, 0.2); border-radius: 8px; padding: 16px; text-align: center;">
             <div style="font-size: 12px; text-transform: uppercase; color: #6b7280; font-weight: 600; margin-bottom: 4px;">Secondary Role</div>
-            <div style="font-size: 20px; font-weight: 700; color: #841844; margin-bottom: 4px;">${escapeHtml(secondaryName)}</div>
-            <div style="font-size: 26px; font-weight: 900; color: #841844;">${escapeHtml(secondaryScore)}</div>
+            <div style="font-size: 20px; font-weight: 700; color: #4F46E5; margin-bottom: 4px;">${escapeHtml(secondaryName)}</div>
+            <div style="font-size: 26px; font-weight: 900; color: #4F46E5;">${escapeHtml(secondaryScore)}</div>
           </div>
         </td>
       </tr>
@@ -99,7 +99,7 @@ function renderBelbinResult(result) {
 
     <!-- Complete Role Profile -->
     <div style="margin-top: 20px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-      <h3 style="margin: 0 0 14px 0; color: #841844; font-size: 16px; font-weight: 700;">Complete Team Role Profile</h3>
+      <h3 style="margin: 0 0 14px 0; color: #4F46E5; font-size: 16px; font-weight: 700;">Complete Team Role Profile</h3>
       ${rolesHtml}
     </div>
 
@@ -119,11 +119,11 @@ function renderMcClellandResult(result) {
     return `
       <div style="margin-bottom: 14px; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 16px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <strong style="color: #841844; font-size: 15px;">${escapeHtml(item.name)} Motivation</strong>
+          <strong style="color: #4F46E5; font-size: 15px;">${escapeHtml(item.name)} Motivation</strong>
           <span style="font-weight: 700; color: #111827; font-size: 14px;">${escapeHtml(item.score)} / 40 (${percentage}%)</span>
         </div>
         <div style="background-color: #f3f4f6; border-radius: 6px; height: 10px; overflow: hidden; margin-bottom: 10px;">
-          <div style="background-color: #841844; height: 10px; width: ${Math.min(100, Math.max(0, percentage))}%; border-radius: 6px;"></div>
+          <div style="background-color: #4F46E5; height: 10px; width: ${Math.min(100, Math.max(0, percentage))}%; border-radius: 6px;"></div>
         </div>
         ${item.description ? `<p style="margin: 0; font-size: 13px; color: #4b5563; line-height: 1.5;">${escapeHtml(item.description)}</p>` : ''}
       </div>
@@ -134,14 +134,14 @@ function renderMcClellandResult(result) {
     <!-- Top summary card -->
     <div style="margin: 20px 0; background-color: #fff5f7; border: 1px solid rgba(132, 24, 68, 0.2); border-radius: 8px; padding: 20px; text-align: center;">
       <div style="font-size: 12px; text-transform: uppercase; color: #6b7280; font-weight: 600; margin-bottom: 4px;">Dominant Motivational Need</div>
-      <div style="font-size: 28px; font-weight: 900; color: #841844;">${escapeHtml(dominantName)} (${escapeHtml(dominantScore)}/40)</div>
+      <div style="font-size: 28px; font-weight: 900; color: #4F46E5;">${escapeHtml(dominantName)} (${escapeHtml(dominantScore)}/40)</div>
       ${secondaryName ? `<div style="font-size: 14px; color: #4b5563; margin-top: 6px;">Secondary Motivation: <strong>${escapeHtml(secondaryName)}</strong> (${escapeHtml(secondaryScore)}/40)</div>` : ''}
     </div>
 
     ${result.description ? `<p style="font-size: 14px; line-height: 1.6; color: #374151; margin: 16px 0;">${escapeHtml(result.description)}</p>` : ''}
 
     <div style="margin-top: 20px;">
-      <h3 style="margin: 0 0 12px 0; color: #841844; font-size: 16px; font-weight: 700;">Motivation Breakdown</h3>
+      <h3 style="margin: 0 0 12px 0; color: #4F46E5; font-size: 16px; font-weight: 700;">Motivation Breakdown</h3>
       ${detailsHtml}
     </div>
 
@@ -159,16 +159,16 @@ function renderMBTIResult(result) {
     const isRightPreferred = d.preference === d.right;
 
     const leftBoxStyle = isLeftPreferred
-      ? 'background-color: #841844; color: #ffffff;'
+      ? 'background-color: #4F46E5; color: #ffffff;'
       : 'background-color: #ffffff; color: #374151; border: 1px solid #e5e7eb;';
     const rightBoxStyle = isRightPreferred
-      ? 'background-color: #841844; color: #ffffff;'
+      ? 'background-color: #4F46E5; color: #ffffff;'
       : 'background-color: #ffffff; color: #374151; border: 1px solid #e5e7eb;';
 
     return `
       <div style="margin-bottom: 12px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 16px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <strong style="color: #841844; font-size: 14px;">Dimension: ${escapeHtml(d.dimension)}</strong>
+          <strong style="color: #4F46E5; font-size: 14px;">Dimension: ${escapeHtml(d.dimension)}</strong>
           <span style="font-size: 13px; font-weight: 600; color: #111827;">Preference: <strong>${escapeHtml(d.preference)}</strong></span>
         </div>
         <table width="100%" cellpadding="0" cellspacing="0">
@@ -192,7 +192,7 @@ function renderMBTIResult(result) {
     <!-- Hero Profile Box -->
     <div style="margin: 20px 0; background-color: #fff5f7; border: 1px solid rgba(132, 24, 68, 0.2); border-radius: 8px; padding: 24px; text-align: center;">
       <div style="font-size: 12px; text-transform: uppercase; color: #6b7280; font-weight: 600; margin-bottom: 6px;">Your 4-Letter Personality Profile</div>
-      <div style="font-size: 42px; font-weight: 900; letter-spacing: 4px; color: #841844; margin-bottom: 4px;">${escapeHtml(typeCode)}</div>
+      <div style="font-size: 42px; font-weight: 900; letter-spacing: 4px; color: #4F46E5; margin-bottom: 4px;">${escapeHtml(typeCode)}</div>
       ${typeName ? `<div style="font-size: 18px; font-weight: 700; color: #1f2937;">${escapeHtml(typeName)}</div>` : ''}
     </div>
 
@@ -200,7 +200,7 @@ function renderMBTIResult(result) {
 
     <!-- Dimension Scores -->
     <div style="margin-top: 20px;">
-      <h3 style="margin: 0 0 12px 0; color: #841844; font-size: 16px; font-weight: 700;">Personality Preference Breakdown</h3>
+      <h3 style="margin: 0 0 12px 0; color: #4F46E5; font-size: 16px; font-weight: 700;">Personality Preference Breakdown</h3>
       ${dimensionsHtml}
     </div>
 
@@ -213,18 +213,18 @@ function renderBreakdownResult(result, score) {
   const rowsHtml = breakdown.map((cat, index) => {
     return `
       <tr style="border-bottom: 1px solid #e5e7eb; background-color: ${index % 2 === 0 ? '#ffffff' : '#f9fafb'};">
-        <td style="padding: 10px 14px; font-weight: 600; color: #841844;">${index + 1}. ${escapeHtml(cat.name)}</td>
+        <td style="padding: 10px 14px; font-weight: 600; color: #4F46E5;">${index + 1}. ${escapeHtml(cat.name)}</td>
         <td style="padding: 10px 14px; text-align: right; font-weight: 700; color: #111827;">${escapeHtml(cat.score)} pts</td>
       </tr>
     `;
   }).join('');
 
   return `
-    ${result.title ? `<div style="font-size: 20px; font-weight: 700; color: #841844; margin: 16px 0 8px 0; text-align:center;">${escapeHtml(result.title)}</div>` : ''}
-    ${score !== undefined && score !== null && !isNaN(score) ? `<div style="text-align: center; margin-bottom: 16px;"><span style="font-size: 36px; font-weight: 900; color: #841844;">${escapeHtml(score)}</span> <span style="font-size: 14px; color: #6b7280;">Total Score</span></div>` : ''}
+    ${result.title ? `<div style="font-size: 20px; font-weight: 700; color: #4F46E5; margin: 16px 0 8px 0; text-align:center;">${escapeHtml(result.title)}</div>` : ''}
+    ${score !== undefined && score !== null && !isNaN(score) ? `<div style="text-align: center; margin-bottom: 16px;"><span style="font-size: 36px; font-weight: 900; color: #4F46E5;">${escapeHtml(score)}</span> <span style="font-size: 14px; color: #6b7280;">Total Score</span></div>` : ''}
 
     <div style="margin: 16px 0; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
-      <div style="padding: 12px 14px; background-color: #f3f4f6; border-bottom: 1px solid #e5e7eb; font-weight: 700; color: #841844; font-size: 15px;">
+      <div style="padding: 12px 14px; background-color: #f3f4f6; border-bottom: 1px solid #e5e7eb; font-weight: 700; color: #4F46E5; font-size: 15px;">
         Assessment Scores Breakdown
       </div>
       <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; font-size: 14px;">
@@ -245,8 +245,8 @@ function renderStandardResult(result, score) {
   if (typeof result === 'string') {
     return `
       <div style="margin: 20px 0; text-align: center;">
-        ${score !== null && score !== undefined ? `<div style="font-size: 40px; font-weight: 900; color: #841844; margin-bottom: 8px;">${escapeHtml(score)}</div>` : ''}
-        <p style="font-size: 16px; font-weight: 600; color: #841844;">${escapeHtml(result)}</p>
+        ${score !== null && score !== undefined ? `<div style="font-size: 40px; font-weight: 900; color: #4F46E5; margin-bottom: 8px;">${escapeHtml(score)}</div>` : ''}
+        <p style="font-size: 16px; font-weight: 600; color: #4F46E5;">${escapeHtml(result)}</p>
       </div>
     `;
   }
@@ -256,8 +256,8 @@ function renderStandardResult(result, score) {
 
   return `
     <div style="margin: 20px 0; text-align: center;">
-      ${score !== null && score !== undefined ? `<div style="font-size: 42px; font-weight: 900; color: #841844; margin-bottom: 6px;">${escapeHtml(score)}</div>` : ''}
-      ${title ? `<div style="font-size: 20px; font-weight: 700; color: #841844; margin-bottom: 10px;">${escapeHtml(title)}</div>` : ''}
+      ${score !== null && score !== undefined ? `<div style="font-size: 42px; font-weight: 900; color: #4F46E5; margin-bottom: 6px;">${escapeHtml(score)}</div>` : ''}
+      ${title ? `<div style="font-size: 20px; font-weight: 700; color: #4F46E5; margin-bottom: 10px;">${escapeHtml(title)}</div>` : ''}
       ${description ? `<p style="font-size: 14px; line-height: 1.6; color: #374151; margin: 0 auto; max-width: 550px;">${escapeHtml(description)}</p>` : ''}
     </div>
 
@@ -341,7 +341,7 @@ export function generateAssessmentEmailHtml(submission) {
           
           <!-- Header Banner -->
           <tr>
-            <td style="background-color: #841844; padding: 28px 24px; text-align: center; color: #ffffff;">
+            <td style="background-color: #4F46E5; padding: 28px 24px; text-align: center; color: #ffffff;">
               <div style="font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; opacity: 0.9; margin-bottom: 6px;">Geeta Personality Portal</div>
               <h1 style="margin: 0; font-size: 24px; font-weight: 800; line-height: 1.3;">Official Assessment Report</h1>
               <div style="font-size: 15px; margin-top: 8px; opacity: 0.95; font-weight: 500;">${escapeHtml(testName)}</div>
@@ -360,7 +360,7 @@ export function generateAssessmentEmailHtml(submission) {
 
               <!-- Candidate Info Card -->
               <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px;">
-                <div style="font-size: 13px; font-weight: 700; color: #841844; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
+                <div style="font-size: 13px; font-weight: 700; color: #4F46E5; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
                   Candidate Details
                 </div>
                 ${candidateTableHtml}
@@ -374,7 +374,7 @@ export function generateAssessmentEmailHtml(submission) {
               <!-- Footer note -->
               <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 12px; color: #6b7280; line-height: 1.6;">
                 <p style="margin: 0 0 6px 0;">This report is automatically generated based on your assessment responses.</p>
-                <p style="margin: 0; font-weight: 600; color: #841844;">Geeta Personality Portal · Geeta University</p>
+                <p style="margin: 0; font-weight: 600; color: #4F46E5;">Geeta Personality Portal · Geeta University</p>
               </div>
 
             </td>

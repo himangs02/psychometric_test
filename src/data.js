@@ -807,9 +807,38 @@ export const TESTS = {
       return scoreMap;
     })(),
     interpret(score) {
-      if (score >= 200) return "High Aggression";
-      if (score >= 140) return "Moderate Aggression";
-      return "Low Aggression";
+      if (score >= 195) {
+        return {
+          title: "High Aggression & Emotional Reactivity",
+          description: "You tend to react intensely when encountering unfairness, disagreement, or unexpected obstacles. High emotional arousal during conflict may lead to acute stress or interpersonal friction.",
+          suggestions: [
+            "Practice the 10-second tactical pause before responding to triggering remarks.",
+            "Utilize constructive assertiveness frameworks (e.g. 'I feel... when... because...') rather than reactive confrontation.",
+            "Incorporate daily physical de-escalation practices such as progressive muscle relaxation or cardiovascular exercise.",
+            "Identify recurring environmental triggers and establish proactive personal boundaries."
+          ]
+        };
+      }
+      if (score >= 135) {
+        return {
+          title: "Moderate Aggression / Balanced Reactivity",
+          description: "You generally maintain composed emotional control, though severe provocations or perceived betrayals may occasionally test your patience.",
+          suggestions: [
+            "Continue refining conflict-resolution and cognitive reframing techniques.",
+            "Practice active perspective-taking during high-stakes discussions.",
+            "Maintain healthy venting channels with trusted peers or mentors."
+          ]
+        };
+      }
+      return {
+        title: "Low Aggression / High Emotional Composure",
+        description: "You exhibit remarkable patience, calm temperament, and resilience when confronted with social friction and stressful circumstances.",
+        suggestions: [
+          "Maintain your positive emotional regulation and conflict-management habits.",
+          "Serve as a peer mediator to facilitate harmonious team communication.",
+          "Ensure you express authentic emotions and boundaries assertively without bottling concerns."
+        ]
+      };
     },
   },
   emotional: {
@@ -835,9 +864,37 @@ export const TESTS = {
       return scoreMap;
     })(),
     interpret(score) {
-      if (score >= 25) return "High Emotional Intelligence";
-      if (score >= 18) return "Moderate Emotional Intelligence";
-      return "Low Emotional Intelligence";
+      if (score >= 24) {
+        return {
+          title: "High Emotional Intelligence (EQ)",
+          description: "You exhibit strong self-awareness, empathy, and social perceptiveness. You are skilled at understanding interpersonal dynamics and resolving emotional challenges with maturity.",
+          suggestions: [
+            "Leverage your natural empathy and rapport-building skills in team leadership and mentorship.",
+            "Explore fields that reward emotional acuity such as human resource management, counseling, and organizational leadership.",
+            "Continue practicing active listening to deepen collaborative relationships."
+          ]
+        };
+      }
+      if (score >= 17) {
+        return {
+          title: "Moderate Emotional Intelligence",
+          description: "You possess a well-rounded emotional foundation, balancing personal intuition with pragmatic problem-solving across everyday situations.",
+          suggestions: [
+            "Practice identifying nuanced emotional cues and body language during group discussions.",
+            "Reflect on how immediate moods influence decision-making under stress.",
+            "Seek constructive feedback from colleagues on your interpersonal communication style."
+          ]
+        };
+      }
+      return {
+        title: "Developing Emotional Intelligence",
+        description: "You may occasionally find it challenging to decode emotions, manage social stress, or empathize with opposing viewpoints.",
+        suggestions: [
+          "Maintain a reflective emotion journal to log triggers, responses, and outcomes.",
+          "Practice non-judgmental active listening before forming immediate conclusions.",
+          "Engage in emotional regulation workshops or mentorship discussions."
+        ]
+      };
     },
   },
   wellbeing: {
@@ -852,9 +909,37 @@ export const TESTS = {
       return scoreMap;
     })(),
     interpret(score) {
-      if (score >= 200) return "High Well-Being";
-      if (score >= 150) return "Moderate Well-Being";
-      return "Low Well-Being";
+      if (score >= 190) {
+        return {
+          title: "High Psychological Well-Being",
+          description: "You enjoy strong life satisfaction, emotional resilience, purposeful engagement, and healthy interpersonal connections.",
+          suggestions: [
+            "Sustain your vitality through regular mindfulness, exercise, and restorative sleep habits.",
+            "Share your optimism and coping strategies with peers and community circles.",
+            "Pursue stretching long-term creative and intellectual goals."
+          ]
+        };
+      }
+      if (score >= 140) {
+        return {
+          title: "Moderate Well-Being",
+          description: "You maintain steady day-to-day well-being, though routine academic, professional, or personal pressures can occasionally sap your energy.",
+          suggestions: [
+            "Establish intentional daily rest rituals to prevent cumulative fatigue.",
+            "Deepen supportive connections with family, friends, and colleagues.",
+            "Practice weekly gratitude reflections to sustain emotional equilibrium."
+          ]
+        };
+      }
+      return {
+        title: "Developing Well-Being",
+        description: "You may currently be feeling overwhelmed, low on energy, or dissatisfied with your present life circumstances.",
+        suggestions: [
+          "Prioritize fundamental physical wellness: consistent sleep, nutrition, and daily walks.",
+          "Reach out to an academic mentor, trusted friend, or counselor to discuss stressors.",
+          "Break challenging tasks into small, achievable milestones to rebuild confidence."
+        ]
+      };
     },
   },
   peerpressure: {
@@ -871,7 +956,7 @@ export const TESTS = {
   interpret(score) {
     if (score <= 70) {
       return {
-        title: "Low Peer Pressure Susceptibility",
+        title: "Low Peer Pressure Susceptibility (High Autonomy)",
         description: "Highly independent and assertive. You have strong personal boundaries and resist group pressure effectively.",
         suggestions: [
           "Continue practicing self-validation and self-awareness.",
@@ -918,32 +1003,32 @@ enterpreneurship : {
     if (score <= 112) {
       return {
         title: "High Entrepreneurial Aptitude",
-        description: "You show strong entrepreneurial potential: self-motivated, creative, persistent, and a risk-taker.",
+        description: "You show strong entrepreneurial potential: self-motivated, creative, persistent, and a natural opportunity-spotter.",
         suggestions: [
-          "Pursue startup events or incubator programs.",
-          "Lead innovation projects or student groups.",
-          "Mentor peers or juniors in entrepreneurship."
+          "Pursue startup pitch events, hackathons, or university incubator programs.",
+          "Lead innovation projects, student enterprises, or venture clubs.",
+          "Seek out mentor founders in your chosen domain to accelerate business execution."
         ]
       };
     }
     if (score <= 184) {
       return {
         title: "Moderate Entrepreneurial Aptitude",
-        description: "You have average entrepreneurial tendencies but can improve with targeted effort.",
+        description: "You have sound entrepreneurial inclinations and problem-solving skills that can be significantly enhanced with structured practice.",
         suggestions: [
-          "Work on areas like leadership, risk-taking, or planning.",
-          "Join entrepreneurship clubs or competitions.",
-          "Use feedback and real-world challenges for growth."
+          "Work on critical areas like leadership, strategic risk-taking, and resource planning.",
+          "Join entrepreneurship workshops or innovation bootcamps.",
+          "Apply design thinking to real-world campus or business challenges."
         ]
       };
     }
     return {
       title: "Low Entrepreneurial Aptitude",
-      description: "You may currently lack confidence, risk tolerance, or planning required for entrepreneurial roles.",
+      description: "You may currently prefer structured, predictable environments with clearly defined guidelines over high-uncertainty ventures.",
       suggestions: [
-        "Start with low-stakes entrepreneurial experiences like freelancing or project pitching.",
-        "Seek coaching or mentorship.",
-        "Practice creative and opportunity-detection exercises."
+        "Start with low-stakes micro-projects, freelancing, or student club initiatives.",
+        "Seek structured mentorship to develop calculated risk tolerance.",
+        "Practice ideation exercises to identify unmet customer needs."
       ]
     };
   }
@@ -963,32 +1048,32 @@ achievement : {
     if (score >= 14 * 5) {
       return {
         title: "High Achievement Motivation",
-        description: "You are driven, competitive, persistent, and goal-oriented.",
+        description: "You are exceptionally driven, competitive, persistent, and goal-oriented. You thrive when tackling challenging standards.",
         suggestions: [
-          "Pursue leadership opportunities and competitions.",
-          "Set long-term goals and break them into smaller milestones.",
-          "Mentor others who lack motivation to build your leadership identity."
+          "Pursue competitive leadership opportunities, research grants, and high-impact projects.",
+          "Set long-term milestones and establish objective success metrics.",
+          "Mentor peers to channel your high drive into team empowerment."
         ]
       };
     }
     if (score >= 7 * 5) {
       return {
         title: "Moderate Achievement Motivation",
-        description: "You have a healthy desire to succeed but may lack consistency.",
+        description: "You have a healthy desire to succeed and perform well, with balanced ambition across personal and academic life.",
         suggestions: [
-          "Practice self-discipline and accountability routines.",
-          "Reflect on moments of peak motivation and aim to replicate them.",
-          "Join groups that inspire goal setting and follow-through."
+          "Practice disciplined weekly goal-setting and progress tracking.",
+          "Reflect on previous breakthrough moments to recreate high-performance conditions.",
+          "Join study circles and professional groups that inspire accountability."
         ]
       };
     }
     return {
-      title: "Low Achievement Motivation",
-      description: "You may lack drive or tend to avoid challenging tasks.",
+      title: "Developing Achievement Motivation",
+      description: "You may currently lack drive or tend to avoid challenging tasks when difficulty increases.",
       suggestions: [
-        "Start by setting small achievable goals.",
-        "Celebrate progress to build internal motivation.",
-        "Consider journaling about your passions and long-term dreams."
+        "Start by setting small, readily achievable daily goals.",
+        "Celebrate small wins to foster internal motivation and confidence.",
+        "Clarify your long-term career aspirations and connect them to daily actions."
       ]
     };
   }
@@ -1000,62 +1085,62 @@ forgiveness : {
   scoring: (() => {
     const scoreMap = {};
     for (let i = 0; i < 25; i++) {
-      scoreMap[i] = [1, 2, 3, 4, 5]; // Lower = more forgiving
+      scoreMap[i] = [5, 4, 3, 2, 1]; // SA=5, A=4, U=3, D=2, SD=1
     }
     return scoreMap;
   })(),
   interpret(score) {
-    if (score <= 64) {
+    if (score >= 100) {
       return {
-        title: "Very Low Forgiveness",
-        description: "You may struggle to let go of resentment and experience emotional pain.",
+        title: "Very High Forgiveness & Emotional Peace",
+        description: "You easily release anger, hold deep emotional maturity, and prioritize healing and harmony over resentment.",
         suggestions: [
-          "Start with forgiving yourself before others.",
-          "Explore guided forgiveness meditations.",
-          "Seek therapy or emotional healing tools."
+          "Be a role model or peer mentor for emotional resilience and peaceful resolution.",
+          "Maintain healthy interpersonal boundaries while practicing compassionate forgiveness.",
+          "Continue mindfulness and reflective journaling rituals."
         ]
       };
     }
-    if (score <= 79) {
-      return {
-        title: "Low Forgiveness",
-        description: "You find it difficult to forgive and might hold onto emotional pain.",
-        suggestions: [
-          "Practice reflective journaling to express emotions.",
-          "Explore compassion practices like loving-kindness meditation.",
-          "Read stories or watch videos of forgiveness to inspire healing."
-        ]
-      };
-    }
-    if (score <= 94) {
-      return {
-        title: "Moderate Forgiveness",
-        description: "You are somewhat forgiving, depending on the situation.",
-        suggestions: [
-          "Understand what stops you from fully letting go.",
-          "Use self-talk to reduce emotional reactivity.",
-          "Try writing forgiveness letters, even if not sent."
-        ]
-      };
-    }
-    if (score <= 109) {
+    if (score >= 80) {
       return {
         title: "High Forgiveness",
-        description: "You generally forgive easily and move past emotional wounds.",
+        description: "You generally forgive readily and move past emotional wounds with constructive perspective.",
         suggestions: [
-          "Continue cultivating empathy and peace practices.",
-          "Use your skills to help friends or peers struggling with conflict.",
-          "Stay aware of emotional boundaries even while being forgiving."
+          "Continue cultivating empathy and constructive communication.",
+          "Assist peers who struggle to navigate conflict and resentment.",
+          "Stay mindful of personal emotional boundaries."
+        ]
+      };
+    }
+    if (score >= 60) {
+      return {
+        title: "Moderate Forgiveness",
+        description: "You are capable of forgiveness depending on the context, but certain deep betrayals may linger.",
+        suggestions: [
+          "Reflect on what internal hurdles prevent full emotional letting-go.",
+          "Practice cognitive reframing to reduce long-term emotional reactivity.",
+          "Experiment with writing unsent forgiveness letters for personal closure."
+        ]
+      };
+    }
+    if (score >= 45) {
+      return {
+        title: "Low Forgiveness",
+        description: "You find it challenging to let go of grudges and may carry residual emotional pain from past conflicts.",
+        suggestions: [
+          "Practice reflective journaling to release stored resentment safely.",
+          "Explore guided compassion and loving-kindness meditations.",
+          "Focus on how letting go serves your own mental peace rather than excusing others."
         ]
       };
     }
     return {
-      title: "Very High Forgiveness",
-      description: "You easily let go of anger and hold deep emotional maturity.",
+      title: "Very Low Forgiveness",
+      description: "You struggle intensely with past hurts and find it difficult to move beyond betrayal.",
       suggestions: [
-        "Be a role model or peer mentor for emotional resilience.",
-        "Journal about your forgiveness journey to inspire others.",
-        "Maintain mindfulness and compassion rituals regularly."
+        "Begin with self-forgiveness before tackling external conflicts.",
+        "Consider speaking with a counselor or mentor for emotional healing strategies.",
+        "Practice small daily acts of letting go of trivial frustrations."
       ]
     };
   }

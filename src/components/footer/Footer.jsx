@@ -115,9 +115,9 @@ export function Footer() {
             © {new Date().getFullYear()} Geeta University. All rights reserved.
           </div>
           <div className="flex items-center gap-1.5 text-[#98A2B3]">
-            <span>Engineered for Student Success at</span>
+            <span>Made with ❤️ by</span>
             <span className="font-semibold text-white">
-              Geeta University
+              Geeta Technical Hub
             </span>
           </div>
         </div>

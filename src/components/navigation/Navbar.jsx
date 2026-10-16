@@ -66,12 +66,16 @@ export function Navbar() {
   };
 
   useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (saved === "dark" || (!saved && prefersDark)) {
-      setIsDark(true);
-      document.documentElement.classList.add("dark");
-    } else {
+    try {
+      const saved = localStorage.getItem("theme");
+      if (saved === "dark") {
+        setIsDark(true);
+        document.documentElement.classList.add("dark");
+      } else {
+        setIsDark(false);
+        document.documentElement.classList.remove("dark");
+      }
+    } catch (e) {
       setIsDark(false);
       document.documentElement.classList.remove("dark");
     }

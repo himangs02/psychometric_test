@@ -40,3 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 copy.js
+public/user_current_screenshot.png
+public/user_ref_banner.png

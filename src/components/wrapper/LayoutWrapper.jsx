@@ -1,13 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/footer/Footer";
 import { BackgroundEffect } from "@/components/ui/BackgroundEffect";
 import { FluidLoader } from "@/components/ui/FluidLoader";
+import { FloatingCounsellorWidget } from "@/components/counsellor/FloatingCounsellorWidget";
+import { OfflineCounsellorDrawer } from "@/components/counsellor/OfflineCounsellorDrawer";
 
 export default function LayoutWrapper({ children }) {
   const [initialLoading, setInitialLoading] = useState(true);
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith("/admin");
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-[#4F46E5]/15 selection:text-[#4F46E5] relative">
@@ -27,7 +32,13 @@ export default function LayoutWrapper({ children }) {
         {children}
       </main>
 
-      {/* 5. Sleek University Footer */}
+      {/* 5. Persistent Floating AI Career Counsellor Widget (Public Pages Only) */}
+      {!isAdmin && <FloatingCounsellorWidget />}
+
+      {/* 6. Persistent Book Offline Counsellor Sidebar Drawer (Public Pages Only) */}
+      {!isAdmin && <OfflineCounsellorDrawer />}
+
+      {/* 7. Sleek University Footer */}
       <Footer />
     </div>
   );

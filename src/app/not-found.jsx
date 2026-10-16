@@ -14,7 +14,6 @@ export default function NotFound() {
 
       <div className="relative z-10 space-y-2 max-w-md">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EEF2FF] dark:bg-[#4F46E5]/10 text-[#4F46E5] dark:text-[#A5B4FC] text-[11px] font-bold uppercase tracking-wider border border-[#4F46E5]/15">
-          <Sparkles className="w-3 h-3 text-[#06B6D4]" />
           <span>404 Error</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-black text-[#111827] dark:text-white tracking-tight">

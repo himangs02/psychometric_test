@@ -4,15 +4,15 @@ import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { Sun, Moon, User, Menu, X, ArrowRight } from "lucide-react";
+import { Sun, Moon, Compass, Menu, X, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { name: "Home", href: "/", sectionId: "home" },
-  { name: "Tests", href: "/#tests", sectionId: "tests" },
-  { name: "About", href: "/#highlights", sectionId: "highlights" },
+  { name: "All 15 Tests", href: "/#tests", sectionId: "tests" },
+  { name: "Career Assessment", href: "/career-guidance-test" },
   { name: "Resources", href: "/#how-it-works", sectionId: "how-it-works" },
-  { name: "Contact", href: "/#contact", sectionId: "contact" },
+  { name: "AI Counsellor", href: "/counsellor" },
 ];
 
 export function Navbar() {
@@ -23,21 +23,17 @@ export function Navbar() {
   const [isDark, setIsDark] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
-  // Scroll listener for header background and active section detection
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 15);
 
       if (pathname === "/") {
         const sections = [
-          { id: "contact", el: document.getElementById("contact") },
-          { id: "highlights", el: document.getElementById("highlights") },
-          { id: "how-it-works", el: document.getElementById("how-it-works") },
           { id: "tests", el: document.getElementById("tests") },
+          { id: "how-it-works", el: document.getElementById("how-it-works") },
         ];
 
         const scrollPosition = window.scrollY + 200;
-
         let current = "home";
         for (const section of sections) {
           if (section.el) {
@@ -57,24 +53,37 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
-  // Handle hash scrolling on initial load or route transition
-  useEffect(() => {
-    if (window.location.hash) {
-      const targetId = window.location.hash.replace("#", "");
-      const element = document.getElementById(targetId);
-      if (element) {
-        setTimeout(() => {
-          const headerOffset = 80;
-          const elementPosition = element.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-          window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-        }, 100);
-      }
+  const toggleTheme = () => {
+    const newDark = !isDark;
+    setIsDark(newDark);
+    if (newDark) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
-  }, [pathname]);
+  };
+
+  useEffect(() => {
+    const saved = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (saved === "dark" || (!saved && prefersDark)) {
+      setIsDark(true);
+      document.documentElement.classList.add("dark");
+    } else {
+      setIsDark(false);
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
 
   const handleNavClick = useCallback(
     (e, link) => {
+      if (!link.sectionId) {
+        setMobileMenuOpen(false);
+        return;
+      }
+
       if (pathname === "/") {
         e.preventDefault();
         setMobileMenuOpen(false);
@@ -88,82 +97,55 @@ export function Navbar() {
 
         const element = document.getElementById(link.sectionId);
         if (element) {
-          const headerOffset = 80;
+          const headerOffset = 85;
           const elementPosition = element.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
           window.scrollTo({ top: offsetPosition, behavior: "smooth" });
           setActiveSection(link.sectionId);
-          window.history.pushState(null, "", `#${link.sectionId}`);
+          window.history.pushState(null, "", `/#${link.sectionId}`);
         }
-      } else {
-        setMobileMenuOpen(false);
       }
     },
     [pathname]
   );
 
-  const toggleTheme = () => {
-    const nextDark = !isDark;
-    setIsDark(nextDark);
-    if (document.documentElement.classList.contains("dark")) {
-      document.documentElement.classList.remove("dark");
-    } else {
-      document.documentElement.classList.add("dark");
-    }
-  };
-
-  const isLinkActive = (link) => {
-    if (pathname === "/") {
-      return activeSection === link.sectionId;
-    }
-    return link.href === pathname;
-  };
-
   return (
     <header
       className={cn(
-        "fixed top-0 inset-x-0 z-50 transition-all duration-300 px-4 sm:px-8 lg:px-12",
-        scrolled ? "py-3" : "py-5"
+        "fixed top-0 inset-x-0 z-50 transition-all duration-300 px-3 sm:px-6 lg:px-8",
+        scrolled ? "py-2.5" : "py-4"
       )}
     >
       <div
         className={cn(
-          "max-w-7xl mx-auto rounded-full transition-all duration-300 flex items-center justify-between px-5 sm:px-7 py-2.5",
+          "max-w-7xl mx-auto rounded-full transition-all duration-300 flex items-center justify-between px-4 sm:px-6 py-2.5",
           scrolled
-            ? "bg-white/90 dark:bg-[#12121E]/90 backdrop-blur-xl border border-[#801A45]/15 shadow-[0_10px_35px_rgba(128,26,69,0.06)]"
-            : "bg-white/70 dark:bg-[#12121E]/70 backdrop-blur-md border border-white/60 dark:border-white/10 shadow-xs"
+            ? "bg-white/95 dark:bg-[#0F172A]/95 backdrop-blur-xl border border-slate-200/80 dark:border-white/10 shadow-[0_10px_35px_rgba(0,0,0,0.06)]"
+            : "bg-white/85 dark:bg-[#0F172A]/85 backdrop-blur-md border border-slate-200/60 dark:border-white/10 shadow-xs"
         )}
       >
-        {/* Brand Logo & Name */}
+        {/* Brand Logo & Name (Geeta Career Compass with Blue Circular Compass) */}
         <Link
           href="/"
-          onClick={(e) => handleNavClick(e, NAV_LINKS[0])}
-          className="flex items-center gap-3 group text-left focus:outline-none focus:ring-2 focus:ring-[#801A45]/30 rounded-lg p-0.5"
+          className="flex items-center gap-2.5 group text-left focus:outline-none rounded-lg"
         >
-          <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shrink-0">
-            <Image
-              src="/gu.png"
-              alt="Geeta University Logo"
-              width={40}
-              height={40}
-              className="object-contain"
-              priority
-            />
+          <div className="w-9 h-9 rounded-full bg-[#2563EB] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+            <Compass className="w-5 h-5" />
           </div>
           <div className="flex flex-col">
-            <span className="text-sm sm:text-base font-extrabold text-[#181829] dark:text-white tracking-tight leading-none">
-              Geeta University
+            <span className="text-xs sm:text-sm font-black text-[#0F172A] dark:text-white tracking-tight leading-none uppercase">
+              GEETA
             </span>
-            <span className="text-[11px] text-[#717182] dark:text-[#A0A0B5] font-medium leading-tight mt-0.5">
-              Psychometric Test Portal
+            <span className="text-[10px] sm:text-[11px] font-black text-[#2563EB] dark:text-[#38BDF8] tracking-wider leading-none mt-0.5 uppercase">
+              CAREER COMPASS
             </span>
           </div>
         </Link>
 
-        {/* Center Pill Navigation Bar */}
-        <nav className="hidden md:flex items-center gap-1 bg-[#F4EFF7]/80 dark:bg-white/5 rounded-full p-1 border border-[#801A45]/10 dark:border-white/5 shadow-2xs">
+        {/* Center Navigation Links (Matching Mockup) */}
+        <nav className="hidden lg:flex items-center gap-1">
           {NAV_LINKS.map((link) => {
-            const active = isLinkActive(link);
+            const active = pathname === link.href || (pathname === "/" && activeSection === link.sectionId);
 
             return (
               <a
@@ -171,86 +153,69 @@ export function Navbar() {
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link)}
                 className={cn(
-                  "px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 select-none cursor-pointer",
+                  "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 select-none cursor-pointer",
                   active
-                    ? "bg-[#EDE9FE] dark:bg-[#801A45] text-[#801A45] dark:text-white shadow-xs font-bold"
-                    : "text-[#667085] dark:text-slate-300 hover:text-[#801A45] dark:hover:text-white hover:bg-white/70 dark:hover:bg-white/10"
+                    ? "text-[#2563EB] dark:text-[#38BDF8] font-bold"
+                    : "text-[#475467] dark:text-slate-300 hover:text-[#0F172A] dark:hover:text-white"
                 )}
               >
-                {link.name}
+                <span>{link.name}</span>
               </a>
             );
           })}
         </nav>
 
-        {/* Right Actions: Theme Toggle & User Avatar */}
-        <div className="flex items-center gap-2.5">
+        {/* Right Actions: Login & Get Started Buttons */}
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="w-9 h-9 rounded-full flex items-center justify-center text-[#667085] dark:text-slate-300 hover:text-[#801A45] hover:bg-[#F4EFF7] dark:hover:bg-white/10 transition-colors focus:outline-none cursor-pointer"
+            className="w-8 h-8 rounded-full flex items-center justify-center text-[#64748B] dark:text-slate-300 hover:text-[#0F172A] dark:hover:text-white transition-colors cursor-pointer"
             aria-label="Toggle Theme"
           >
-            {isDark ? (
-              <Sun className="w-4 h-4 text-amber-400" />
-            ) : (
-              <Moon className="w-4 h-4" />
-            )}
+            {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
           </button>
 
-          {/* User Profile Avatar */}
+
+          {/* Get Started Button (Navy Solid Pill) */}
           <Link
-            href="/admin"
-            className="w-9 h-9 rounded-full bg-[#181829] dark:bg-white/10 text-white flex items-center justify-center shadow-xs hover:bg-[#801A45] transition-colors focus:outline-none cursor-pointer"
-            title="User / Admin Profile"
+            href="/career-guidance-test"
+            className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2 rounded-full bg-[#0F172A] dark:bg-[#2563EB] hover:bg-[#1E293B] dark:hover:bg-[#1D4ED8] text-white text-xs font-bold shadow-xs hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
           >
-            <User className="w-4 h-4" />
+            <span>Get Started</span>
           </Link>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Hamburger Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-xl text-[#181829] dark:text-slate-200 hover:bg-[#F4EFF7] focus:outline-none cursor-pointer"
-            aria-label="Toggle Navigation Menu"
+            className="lg:hidden p-1.5 rounded-xl text-[#0F172A] dark:text-white cursor-pointer"
+            aria-label="Open Mobile Menu"
           >
-            {mobileMenuOpen ? (
-              <X className="w-5 h-5 text-[#801A45]" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden max-w-7xl mx-auto mt-2 rounded-2xl bg-white/95 dark:bg-[#12121E]/95 backdrop-blur-2xl border border-[#801A45]/15 shadow-2xl p-4 flex flex-col gap-2 animate-in fade-in-0 slide-in-from-top-2 duration-200">
-          {NAV_LINKS.map((link) => {
-            const active = isLinkActive(link);
-            return (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link)}
-                className={cn(
-                  "px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer",
-                  active
-                    ? "bg-[#801A45] text-white"
-                    : "text-slate-700 dark:text-slate-200 hover:bg-[#F4EFF7] hover:text-[#801A45]"
-                )}
-              >
-                {link.name}
-              </a>
-            );
-          })}
-          <div className="pt-2 border-t border-[#E5E7EB] dark:border-white/10 mt-1">
-            <Link
-              href="/test"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-bold text-white bg-[#801A45] hover:bg-[#6A1439] transition-colors"
+        <div className="lg:hidden mt-2 p-4 rounded-3xl bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-white/10 shadow-xl space-y-2 text-left">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              onClick={(e) => handleNavClick(e, link)}
+              className="block px-4 py-2.5 rounded-xl text-xs font-bold text-[#334155] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/5"
             >
-              <span>Explore Tests</span>
-              <ArrowRight className="w-4 h-4" />
+              {link.name}
+            </a>
+          ))}
+          <div className="pt-2 border-t border-slate-100 dark:border-white/10">
+            <Link
+              href="/career-guidance-test"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full block text-center px-4 py-2.5 rounded-xl bg-[#EA580C] text-white text-xs font-bold"
+            >
+              Start Free Assessment
             </Link>
           </div>
         </div>
@@ -258,5 +223,3 @@ export function Navbar() {
     </header>
   );
 }
-
-export default Navbar;

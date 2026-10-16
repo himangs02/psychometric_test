@@ -2,128 +2,152 @@
 
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowUpRight, ShieldCheck } from "lucide-react";
+import { Compass, Instagram, Youtube, Linkedin, ArrowUpRight } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer id="contact" className="border-t border-[#801A45]/15 bg-[#181829] text-[#98A2B3] relative overflow-hidden">
-      {/* Subtle bottom ambient light */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-24 bg-[#801A45]/20 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-14 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
-          {/* Brand Column */}
+    <footer id="contact" className="border-t border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0B1120] text-[#64748B] dark:text-slate-400">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 text-left">
+          
+          {/* Column 1: Brand Info & Tagline */}
           <div className="md:col-span-5 space-y-4">
-            <Link href="/" className="flex items-center gap-3 group w-fit">
-              <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shrink-0">
-                <Image
-                  src="/gu.png"
-                  alt="Geeta University Logo"
-                  width={40}
-                  height={40}
-                  className="object-contain"
-                />
+            <Link href="/" className="flex items-center gap-2.5 group w-fit">
+              <div className="w-9 h-9 rounded-full bg-[#2563EB] text-white flex items-center justify-center shadow-xs">
+                <Compass className="w-5 h-5" />
               </div>
-              <div className="flex flex-col text-left">
-                <span className="text-[10px] uppercase font-black tracking-widest text-[#F472B6]">
-                  Geeta University
+              <div className="flex flex-col">
+                <span className="text-xs sm:text-sm font-black text-[#0F172A] dark:text-white tracking-tight leading-none uppercase">
+                  GEETA
                 </span>
-                <span className="text-sm sm:text-base font-bold text-white tracking-tight leading-tight">
-                  Psychometric Test Portal
+                <span className="text-[10px] sm:text-[11px] font-black text-[#2563EB] dark:text-[#38BDF8] tracking-wider leading-none mt-0.5 uppercase">
+                  CAREER COMPASS
                 </span>
               </div>
             </Link>
 
-            <p className="text-xs text-[#98A2B3] max-w-sm leading-relaxed">
-              Standardized psychological instruments engineered to help students unlock cognitive potential, behavioral traits, and calibrated career pathways.
+            <p className="text-xs sm:text-sm text-[#64748B] dark:text-slate-400 max-w-sm leading-relaxed">
+              Discover Yourself. Explore Possibilities. Build Your Future.
             </p>
 
-            <div className="flex items-center gap-2 text-[11px] text-[#F472B6] font-medium pt-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#F472B6]" />
-              <span>Standardized Psychometric Instruments</span>
-            </div>
+            <p className="text-xs text-[#94A3B8] max-w-sm leading-relaxed">
+              Powered by Geeta University — providing scientific career assessment, academic stream advisory, and 1-on-1 expert guidance for high school and college students.
+            </p>
           </div>
 
-          {/* Quick Tests Links */}
+          {/* Column 2: Quick Links */}
           <div className="md:col-span-3 space-y-3">
-            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-white">
-              Assessments
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-[#0F172A] dark:text-white">
+              Quick Links
             </h4>
-            <ul className="space-y-2 text-xs text-[#D1D5DB]">
+            <ul className="space-y-2 text-xs text-[#475467] dark:text-slate-300">
               <li>
-                <Link href="/test?test=riasec" className="hover:text-[#F472B6] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#801A45]" />
-                  <span>RIASEC Career Interest</span>
+                <Link href="/" className="hover:text-[#2563EB] transition-colors">
+                  Home
                 </Link>
               </li>
               <li>
-                <Link href="/test?test=hgmi" className="hover:text-[#F472B6] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#801A45]" />
-                  <span>Multiple Intelligence (Gardner)</span>
+                <Link href="/career-guidance-test" className="hover:text-[#2563EB] transition-colors">
+                  Career Assessment
                 </Link>
               </li>
               <li>
-                <Link href="/test?test=mbti" className="hover:text-[#F472B6] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#801A45]" />
-                  <span>MBTI 16 Personalities</span>
+                <Link href="/#tests" className="hover:text-[#2563EB] transition-colors">
+                  All 15 Tests
                 </Link>
               </li>
               <li>
-                <Link href="/career-guidance-test" className="hover:text-[#F472B6] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#F472B6]" />
-                  <span>Career Guidance Test</span>
+                <Link href="/#how-it-works" className="hover:text-[#2563EB] transition-colors">
+                  Resources
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          {/* Institutional Links */}
-          <div className="md:col-span-4 space-y-3">
-            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-white">
-              Geeta University
-            </h4>
-            <ul className="space-y-2 text-xs text-[#D1D5DB]">
               <li>
-                <a
-                  href="https://geetauniversity.edu.in"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 hover:text-[#F472B6] transition-colors"
-                >
-                  <span>Official University Portal</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-[#98A2B3]" />
+                <a href="https://geetauniversity.edu.in" target="_blank" rel="noopener noreferrer" className="hover:text-[#2563EB] transition-colors inline-flex items-center gap-1">
+                  <span>About Geeta University</span>
+                  <ArrowUpRight className="w-3 h-3" />
                 </a>
               </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Support */}
+          <div className="md:col-span-2 space-y-3">
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-[#0F172A] dark:text-white">
+              Support
+            </h4>
+            <ul className="space-y-2 text-xs text-[#475467] dark:text-slate-300">
               <li>
-                <Link href="/admin" className="hover:text-[#F472B6] transition-colors">
-                  Faculty & Admin Portal
+                <Link href="/counsellor" className="hover:text-[#2563EB] transition-colors">
+                  Help Center
                 </Link>
               </li>
               <li>
-                <span className="text-[#98A2B3]/80 block text-[11px] leading-relaxed mt-1">
-                  NH-71, Naultha, Panipat, Delhi-NCR, Haryana 132145
-                </span>
+                <Link href="/counsellor" className="hover:text-[#2563EB] transition-colors">
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin" className="hover:text-[#2563EB] transition-colors">
+                  Admin Portal
+                </Link>
+              </li>
+              <li>
+                <span className="text-muted-foreground">Privacy Policy</span>
+              </li>
+              <li>
+                <span className="text-muted-foreground">Terms of Use</span>
               </li>
             </ul>
+          </div>
+
+          {/* Column 4: Follow Us */}
+          <div className="md:col-span-2 space-y-3">
+            <h4 className="text-xs font-extrabold uppercase tracking-wider text-[#0F172A] dark:text-white">
+              Follow Us
+            </h4>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-200 hover:bg-[#2563EB] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+
+              <a
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-200 hover:bg-[#2563EB] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="YouTube"
+              >
+                <Youtube className="w-4 h-4" />
+              </a>
+
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-200 hover:bg-[#2563EB] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Row */}
-        <div className="mt-12 pt-6 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#98A2B3]">
-          <div>
-            © {new Date().getFullYear()} Geeta University. All rights reserved.
-          </div>
-          <div className="flex items-center gap-1.5 text-[#98A2B3]">
-            <span>Made with ❤️ by</span>
-            <span className="font-semibold text-white">
-              Geeta Technical Hub
-            </span>
-          </div>
+        {/* Bottom Copyright */}
+        <div className="mt-12 pt-6 border-t border-slate-100 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#94A3B8]">
+          <p>© 2026 Geeta Career Compass. All rights reserved.</p>
+          <p className="flex items-center gap-1.5">
+            <span>Powered by</span>
+            <span className="font-bold text-[#0F172A] dark:text-white">Geeta University</span>
+          </p>
         </div>
       </div>
     </footer>
   );
 }
-
-export default Footer;

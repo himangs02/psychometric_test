@@ -38,10 +38,12 @@ import {
   Calendar,
   Layers,
   FileSpreadsheet,
+  UserCheck,
 } from "lucide-react";
 import { TESTS } from "@/data";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
+import { OfflineCounsellingDashboard } from "@/components/admin/OfflineCounsellingDashboard";
 
 const exportToCsv = (data, filename = 'Test Submissions.csv') => {
   if (typeof window === "undefined" || !data || !data.length) return;
@@ -168,6 +170,8 @@ export default function AdminPanel() {
   const [dataToExport, setDataToExport] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [activeTab, setActiveTab] = useState("offline"); // "offline" | "submissions"
+  const [offlineCount, setOfflineCount] = useState(0);
 
   const fetchAllTestSubmissions = async () => {
     try {
@@ -267,9 +271,9 @@ export default function AdminPanel() {
     return (
       <div className="w-full min-h-[85vh] flex items-center justify-center pt-28 sm:pt-32 pb-16 px-4">
         <div className="w-full max-w-md">
-          <Card className="rounded-3xl border border-[#801A45]/15 dark:border-white/10 shadow-[0_20px_50px_rgba(128,26,69,0.08)] bg-white/90 dark:bg-[#181829]/90 backdrop-blur-xl overflow-hidden">
+          <Card className="rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-[0_20px_50px_rgba(37,99,235,0.08)] bg-white/90 dark:bg-[#181829]/90 backdrop-blur-xl overflow-hidden">
             <CardHeader className="text-center pt-8 pb-4 space-y-3">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-[#801A45]/10 dark:bg-white/5 flex items-center justify-center border border-[#801A45]/20">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-blue-50 dark:bg-white/5 flex items-center justify-center border border-blue-200 dark:border-blue-900/40">
                 <Image
                   src="/gu.png"
                   alt="Geeta University Logo"
@@ -279,8 +283,8 @@ export default function AdminPanel() {
                 />
               </div>
               <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#FAF5F8] dark:bg-white/5 text-[#801A45] dark:text-[#F472B6] text-[10px] font-bold uppercase tracking-wider border border-[#801A45]/15 mb-2">
-                  <ShieldCheck className="w-3 h-3 text-[#801A45]" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/40 text-[#2563EB] dark:text-[#38BDF8] text-[10px] font-bold uppercase tracking-wider border border-blue-200 dark:border-blue-900/40 mb-2">
+                  <ShieldCheck className="w-3 h-3 text-[#2563EB]" />
                   <span>Institutional Portal</span>
                 </div>
                 <h2 className="text-2xl font-black text-[#181829] dark:text-white tracking-tight">
@@ -302,7 +306,7 @@ export default function AdminPanel() {
 
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-xs font-bold text-[#344054] dark:text-slate-200 flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-[#801A45]" />
+                  <Mail className="w-3.5 h-3.5 text-[#2563EB]" />
                   <span>Institutional Email</span>
                 </Label>
                 <Input
@@ -311,13 +315,13 @@ export default function AdminPanel() {
                   placeholder="admin@geeta.edu.in"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="rounded-xl border-slate-200 dark:border-white/10 focus-visible:ring-[#801A45]"
+                  className="rounded-xl border-slate-200 dark:border-white/10 focus-visible:ring-[#2563EB]"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-xs font-bold text-[#344054] dark:text-slate-200 flex items-center gap-1.5">
-                  <Lock className="w-3.5 h-3.5 text-[#801A45]" />
+                  <Lock className="w-3.5 h-3.5 text-[#2563EB]" />
                   <span>Password</span>
                 </Label>
                 <Input
@@ -329,13 +333,13 @@ export default function AdminPanel() {
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleLogin();
                   }}
-                  className="rounded-xl border-slate-200 dark:border-white/10 focus-visible:ring-[#801A45]"
+                  className="rounded-xl border-slate-200 dark:border-white/10 focus-visible:ring-[#2563EB]"
                 />
               </div>
 
               <Button
                 onClick={handleLogin}
-                className="w-full mt-6 py-5 rounded-xl font-bold text-sm text-white bg-[#801A45] hover:bg-[#6A1439] shadow-lg shadow-[#801A45]/20 hover:scale-[1.01] active:scale-98 transition-all cursor-pointer"
+                className="w-full mt-6 py-5 rounded-xl font-bold text-sm text-white bg-[#2563EB] hover:bg-[#1D4ED8] shadow-lg shadow-blue-500/25 hover:scale-[1.01] active:scale-98 transition-all cursor-pointer"
               >
                 Sign In to Dashboard
               </Button>
@@ -353,12 +357,12 @@ export default function AdminPanel() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto pt-28 sm:pt-32 px-4 sm:px-8 lg:px-12 pb-20 space-y-8">
+    <div className="w-full max-w-7xl mx-auto pt-36 sm:pt-40 px-4 sm:px-8 lg:px-12 pb-20 space-y-8">
       {/* Admin Header with Metrics & Actions */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#801A45]/10 dark:border-white/10">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-white/10">
         <div className="space-y-1.5">
-          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#FAF5F8] dark:bg-white/5 text-[#801A45] dark:text-[#F472B6] text-[10px] font-bold uppercase tracking-wider border border-[#801A45]/15">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#801A45]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/40 text-[#2563EB] dark:text-[#38BDF8] text-[10px] font-bold uppercase tracking-wider border border-blue-200 dark:border-blue-900/40">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB]" />
             <span>Institutional Management</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-[#181829] dark:text-white tracking-tight">
@@ -371,16 +375,16 @@ export default function AdminPanel() {
 
         {/* Stats Chips & Logout */}
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#FAF5F8] dark:bg-white/5 border border-[#801A45]/15 text-xs">
-            <Users className="w-4 h-4 text-[#801A45] dark:text-[#F472B6]" />
-            <span className="text-[#667085] dark:text-slate-300">Total:</span>
-            <span className="font-bold text-[#181829] dark:text-white">{testSubmissions.length}</span>
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-blue-50/60 dark:bg-white/5 border border-blue-200/80 dark:border-blue-900/40 text-xs">
+            <UserCheck className="w-4 h-4 text-[#2563EB] dark:text-[#38BDF8]" />
+            <span className="text-[#667085] dark:text-slate-300">Offline Bookings:</span>
+            <span className="font-bold text-[#2563EB] dark:text-[#38BDF8]">{offlineCount}</span>
           </div>
 
           <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs">
-            <Layers className="w-4 h-4 text-slate-500 dark:text-slate-300" />
-            <span className="text-[#667085] dark:text-slate-300">Filtered:</span>
-            <span className="font-bold text-[#181829] dark:text-white">{filteredSubmissions.length}</span>
+            <FileSpreadsheet className="w-4 h-4 text-slate-500 dark:text-slate-300" />
+            <span className="text-[#667085] dark:text-slate-300">Test Submissions:</span>
+            <span className="font-bold text-[#181829] dark:text-white">{testSubmissions.length}</span>
           </div>
 
           <Button
@@ -394,13 +398,62 @@ export default function AdminPanel() {
         </div>
       </div>
 
-      {/* Main Submissions Card */}
+      {/* Navigation Switch Tabs */}
+      <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 w-fit">
+        <button
+          type="button"
+          onClick={() => setActiveTab("offline")}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            activeTab === "offline"
+              ? "bg-[#2563EB] text-white shadow-md shadow-blue-500/25"
+              : "text-[#667085] dark:text-[#98A2B3] hover:text-[#181829] dark:hover:text-white"
+          }`}
+        >
+          <UserCheck className="w-4 h-4" />
+          <span>Offline Counselling Leads</span>
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
+            activeTab === "offline"
+              ? "bg-white/20 text-white"
+              : "bg-blue-50 text-[#2563EB] dark:bg-white/10 dark:text-[#38BDF8]"
+          }`}>
+            {offlineCount}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab("submissions")}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            activeTab === "submissions"
+              ? "bg-[#2563EB] text-white shadow-md shadow-blue-500/25"
+              : "text-[#667085] dark:text-[#98A2B3] hover:text-[#181829] dark:hover:text-white"
+          }`}
+        >
+          <FileSpreadsheet className="w-4 h-4" />
+          <span>Psychometric Test Submissions</span>
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
+            activeTab === "submissions"
+              ? "bg-white/20 text-white"
+              : "bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300"
+          }`}>
+            {testSubmissions.length}
+          </span>
+        </button>
+      </div>
+
+      {/* Tab 1: Offline Counselling Bookings Dashboard */}
+      {activeTab === "offline" && (
+        <OfflineCounsellingDashboard onCountUpdate={setOfflineCount} />
+      )}
+
+      {/* Tab 2: Psychometric Test Submissions */}
+      {activeTab === "submissions" && (
       <Card className="rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-[0_10px_35px_rgba(0,0,0,0.03)] bg-white dark:bg-[#181829] overflow-hidden">
         {/* Card Header & Filter Bar */}
         <CardHeader className="p-6 sm:p-8 pb-4 border-b border-slate-100 dark:border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <FileSpreadsheet className="w-5 h-5 text-[#801A45] dark:text-[#F472B6]" />
+              <FileSpreadsheet className="w-5 h-5 text-[#2563EB] dark:text-[#38BDF8]" />
               <h2 className="text-xl font-bold text-[#181829] dark:text-white">
                 Student Submissions
               </h2>
@@ -413,7 +466,7 @@ export default function AdminPanel() {
           <Button
             variant="outline"
             onClick={() => exportToCsv(dataToExport, 'Test Submissions.csv')}
-            className="rounded-xl border-[#801A45]/20 text-[#801A45] dark:text-[#F472B6] hover:bg-[#FAF5F8] dark:hover:bg-white/5 font-semibold text-xs gap-2 shrink-0 cursor-pointer"
+            className="rounded-xl border-slate-200 dark:border-white/10 text-[#0F172A] dark:text-white hover:bg-slate-50 dark:hover:bg-white/5 font-semibold text-xs gap-2 shrink-0 cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export to CSV</span>
@@ -444,7 +497,7 @@ export default function AdminPanel() {
 
             <Button
               onClick={fetchAllTestSubmissions}
-              className="rounded-xl bg-[#801A45] hover:bg-[#6A1439] text-white text-xs font-semibold gap-1.5 cursor-pointer"
+              className="rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold gap-1.5 cursor-pointer shadow-md shadow-blue-500/20"
             >
               <Search className="w-3.5 h-3.5" />
               <span>Search</span>
@@ -470,7 +523,7 @@ export default function AdminPanel() {
                   paginatedSubmissions.map((submission, index) => (
                     <TableRow
                       key={submission.id}
-                      className="hover:bg-[#FAF5F8]/50 dark:hover:bg-white/5 transition-colors"
+                      className="hover:bg-slate-50/80 dark:hover:bg-white/5 transition-colors"
                     >
                       <TableCell className="font-mono text-xs text-[#98A2B3]">{startIndex + index + 1}</TableCell>
                       <TableCell className="font-semibold text-xs text-[#181829] dark:text-white">{submission.name}</TableCell>
@@ -490,7 +543,7 @@ export default function AdminPanel() {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="rounded-xl border-slate-200 dark:border-white/10 hover:border-[#801A45] hover:text-[#801A45] dark:hover:text-[#F472B6] text-xs gap-1.5 cursor-pointer"
+                              className="rounded-xl border-slate-200 dark:border-white/10 hover:border-[#2563EB] hover:text-[#2563EB] dark:hover:text-[#38BDF8] text-xs gap-1.5 cursor-pointer"
                             >
                               <Eye className="h-3.5 w-3.5" />
                               <span className="hidden sm:inline">Inspect</span>
@@ -498,7 +551,7 @@ export default function AdminPanel() {
                           </DialogTrigger>
                           <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto rounded-3xl p-6 sm:p-8 bg-white dark:bg-[#181829] border border-slate-200 dark:border-white/10">
                             <DialogHeader className="pb-4 border-b border-slate-100 dark:border-white/10">
-                              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#FAF5F8] dark:bg-white/5 text-[#801A45] dark:text-[#F472B6] text-[10px] font-bold uppercase tracking-wider border border-[#801A45]/15 w-fit mb-2">
+                              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/40 text-[#2563EB] dark:text-[#38BDF8] text-[10px] font-bold uppercase tracking-wider border border-blue-200 dark:border-blue-900/40 w-fit mb-2">
                                 <span>Candidate Report</span>
                               </div>
                               <DialogTitle className="text-2xl font-black text-[#181829] dark:text-white tracking-tight">
@@ -562,8 +615,8 @@ export default function AdminPanel() {
                               </div>
 
                               {/* Score Highlight Box */}
-                              <div className="col-span-full my-4 p-6 rounded-2xl bg-[#FAF5F8] dark:bg-white/5 border border-[#801A45]/15 text-center space-y-1">
-                                <p className="text-4xl font-black text-[#801A45] dark:text-[#F472B6]">
+                              <div className="col-span-full my-4 p-6 rounded-2xl bg-blue-50/50 dark:bg-white/5 border border-blue-200/80 dark:border-blue-900/40 text-center space-y-1">
+                                <p className="text-4xl font-black text-[#2563EB] dark:text-[#38BDF8]">
                                   {submission.score}
                                 </p>
                                 <Label className="text-xs font-bold uppercase tracking-wider text-[#667085] dark:text-slate-300">
@@ -596,7 +649,7 @@ export default function AdminPanel() {
                                   } else if (parsedResult && typeof parsedResult === 'object') {
                                     return (
                                       <div className="p-5 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200/60 dark:border-white/5 space-y-4">
-                                        <h4 className="font-bold text-base text-[#801A45] dark:text-[#F472B6]">
+                                        <h4 className="font-bold text-base text-[#2563EB] dark:text-[#38BDF8]">
                                           {parsedResult.title}
                                         </h4>
                                         <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -608,7 +661,7 @@ export default function AdminPanel() {
                                           <div className="mt-4 space-y-6">
                                             {/* Score Table */}
                                             <div>
-                                              <h5 className="font-bold text-xs uppercase tracking-wider text-[#801A45] dark:text-[#F472B6] mb-2">Full Score Breakdown</h5>
+                                              <h5 className="font-bold text-xs uppercase tracking-wider text-[#2563EB] dark:text-[#38BDF8] mb-2">Full Score Breakdown</h5>
                                               <div className="border rounded-xl bg-white dark:bg-[#12121E] overflow-hidden">
                                                 <Table>
                                                   <TableHeader>
@@ -619,7 +672,7 @@ export default function AdminPanel() {
                                                   </TableHeader>
                                                   <TableBody>
                                                     {parsedResult.breakdown.map((cat, index) => (
-                                                      <TableRow key={index} className={index < 3 ? 'bg-[#FAF5F8] dark:bg-white/5 font-semibold' : ''}>
+                                                      <TableRow key={index} className={index < 3 ? 'bg-blue-50/50 dark:bg-white/5 font-semibold' : ''}>
                                                         <TableCell className="text-xs">{cat.name}</TableCell>
                                                         <TableCell className="text-right text-xs font-mono">{cat.score}</TableCell>
                                                       </TableRow>
@@ -631,7 +684,7 @@ export default function AdminPanel() {
 
                                             {/* Detailed Recommendations for Top 3 */}
                                             <div className="border-t border-slate-200 dark:border-white/10 pt-4">
-                                              <h5 className="font-bold text-xs uppercase tracking-wider text-[#801A45] dark:text-[#F472B6] mb-3">Top 3 Recommended Careers & Courses</h5>
+                                              <h5 className="font-bold text-xs uppercase tracking-wider text-[#2563EB] dark:text-[#38BDF8] mb-3">Top 3 Recommended Careers & Courses</h5>
                                               <div className="space-y-3">
                                                 {parsedResult.breakdown.slice(0, 3).map((cat, i) => {
                                                   const details = HGMI_DETAILS[cat.id] || HGMI_DETAILS[cat.name]; 
@@ -639,8 +692,8 @@ export default function AdminPanel() {
 
                                                   return (
                                                     <div key={i} className="bg-white dark:bg-[#12121E] p-4 rounded-xl border border-slate-200 dark:border-white/10 shadow-xs">
-                                                      <h6 className="font-bold text-[#801A45] dark:text-[#F472B6] mb-2 text-sm flex items-center gap-2">
-                                                        <span className="bg-[#801A45] text-white w-5 h-5 flex items-center justify-center rounded-full text-[10px] font-bold font-mono">{i + 1}</span>
+                                                      <h6 className="font-bold text-[#2563EB] dark:text-[#38BDF8] mb-2 text-sm flex items-center gap-2">
+                                                        <span className="bg-[#2563EB] text-white w-5 h-5 flex items-center justify-center rounded-full text-[10px] font-bold font-mono">{i + 1}</span>
                                                         {cat.name}
                                                       </h6>
                                                       <div className="grid md:grid-cols-2 gap-3 text-xs">
@@ -650,7 +703,7 @@ export default function AdminPanel() {
                                                         </div>
                                                         <div>
                                                           <span className="font-bold text-slate-800 dark:text-slate-200 block mb-1 flex items-center gap-1.5">
-                                                            <GraduationCap className="w-3.5 h-3.5 text-[#801A45] dark:text-[#F472B6]"/> Recommended Courses:
+                                                            <GraduationCap className="w-3.5 h-3.5 text-[#2563EB] dark:text-[#38BDF8]"/> Recommended Courses:
                                                           </span>
                                                           <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-0.5 mt-1">
                                                             {details.courses.map((c, idx) => (
@@ -789,6 +842,7 @@ export default function AdminPanel() {
           )}
         </CardContent>
       </Card>
+      )}
     </div>
   );
 }

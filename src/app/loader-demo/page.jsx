@@ -20,7 +20,7 @@ export default function LoaderDemoPage() {
       {/* Demo Section 1: Animated Pencil Loader */}
       <div className="text-center space-y-4 max-w-md p-8 rounded-3xl bg-white/5 border border-white/10 shadow-2xl backdrop-blur-xl">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#4F46E5]/20 border border-[#4F46E5]/30 text-[#A5B4FC] text-xs font-bold uppercase">
-          <Sparkles className="w-3.5 h-3.5" />
+      
           <span>Active Loader</span>
         </div>
         <h1 className="text-2xl font-black">Pencil Drawing Loader</h1>

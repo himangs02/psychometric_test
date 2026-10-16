@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Play, Users, BarChart3, Star } from "lucide-react";
+import { ArrowRight, Play, Users, BarChart3, Star, Bot } from "lucide-react";
 import { HeroGlobe } from "./HeroGlobe";
 
 export function Hero() {
@@ -40,8 +40,16 @@ export function Hero() {
             {/* CTA Buttons */}
             <div className="flex flex-wrap items-center gap-3.5 pt-1">
               <Link
+                href="/counsellor"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-[#801A45] to-[#A21E57] hover:from-[#6A1439] hover:to-[#801A45] shadow-[0_10px_25px_-5px_rgba(128,26,69,0.35)] hover:scale-[1.02] active:scale-95 transition-all duration-200 cursor-pointer"
+              >
+                <Bot className="w-4 h-4" />
+                <span>Talk to AI Counsellor</span>
+              </Link>
+
+              <Link
                 href="/test"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-bold text-xs sm:text-sm text-white bg-[#801A45] hover:bg-[#6A1439] shadow-[0_10px_25px_-5px_rgba(128,26,69,0.35)] hover:scale-[1.02] active:scale-95 transition-all duration-200 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-bold text-xs sm:text-sm text-[#181829] dark:text-white bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/10 hover:border-[#801A45]/30 hover:bg-[#FAF5F8] dark:hover:bg-white/10 transition-all duration-200 cursor-pointer shadow-xs"
               >
                 <span>Explore Tests</span>
                 <ArrowRight className="w-4 h-4" />
@@ -49,7 +57,7 @@ export function Hero() {
 
               <a
                 href="#how-it-works"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-semibold text-xs sm:text-sm text-[#181829] dark:text-white bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/10 hover:border-[#801A45]/30 hover:bg-[#FAF5F8] dark:hover:bg-white/10 transition-all duration-200 cursor-pointer shadow-xs"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full font-semibold text-xs sm:text-sm text-[#667085] dark:text-slate-300 hover:text-[#801A45] dark:hover:text-white transition-all duration-200 cursor-pointer"
               >
                 <div className="w-5 h-5 rounded-full border border-current flex items-center justify-center">
                   <Play className="w-2.5 h-2.5 fill-current ml-0.5" />

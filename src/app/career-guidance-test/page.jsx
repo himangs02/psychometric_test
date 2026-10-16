@@ -56,7 +56,7 @@ export default function CareerGuidancePage() {
 
             <div className="relative z-10 max-w-2xl space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-[#A5B4FC] text-[11px] font-bold uppercase tracking-wider border border-white/15 backdrop-blur-md">
-                <Sparkles className="w-3.5 h-3.5 text-[#06B6D4]" />
+               
                 <span>Academic & Career Advisory Guide</span>
               </div>
 

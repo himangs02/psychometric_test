@@ -27,8 +27,8 @@ export function TestGrid() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
         <div className="space-y-3 max-w-2xl text-left">
           {/* Subheader */}
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#801A45] dark:text-[#F472B6]">
-            <span className="w-5 h-[2px] bg-[#801A45]" />
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#1D68EE] dark:text-[#38BDF8]">
+            <span className="w-5 h-[2px] bg-[#1D68EE]" />
             <span>OUR TESTS</span>
           </div>
 
@@ -43,8 +43,8 @@ export function TestGrid() {
 
         {/* Category Count Tag */}
         <div className="shrink-0">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-[#801A45] dark:text-[#F472B6] bg-[#FAF5F8] dark:bg-white/5 border border-[#801A45]/15">
-            <span className="w-2 h-2 rounded-full bg-[#801A45]" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-[#1D68EE] dark:text-[#38BDF8] bg-blue-50 dark:bg-white/5 border border-blue-200/60 dark:border-white/10">
+            <span className="w-2 h-2 rounded-full bg-[#1D68EE]" />
             <span>{ALL_TESTS.length} Standardized Tests Available</span>
           </div>
         </div>
@@ -65,8 +65,8 @@ export function TestGrid() {
               onClick={() => setSelectedCategory(cat)}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-2 shrink-0 ${
                 isActive
-                  ? "bg-[#801A45] text-white shadow-[0_4px_14px_rgba(128,26,69,0.25)] scale-[1.02]"
-                  : "bg-white dark:bg-white/5 text-[#667085] dark:text-slate-300 border border-slate-200/80 dark:border-white/10 hover:border-[#801A45]/30 hover:text-[#801A45] dark:hover:text-white"
+                  ? "bg-[#1D68EE] text-white shadow-[0_4px_14px_rgba(29,104,238,0.25)] scale-[1.02]"
+                  : "bg-white dark:bg-white/5 text-[#667085] dark:text-slate-300 border border-slate-200/80 dark:border-white/10 hover:border-[#1D68EE]/40 hover:text-[#1D68EE] dark:hover:text-white"
               }`}
             >
               <span>{cat}</span>
@@ -92,7 +92,7 @@ export function TestGrid() {
             <Link
               key={test.id || test.href}
               href={test.href}
-              className="group relative rounded-[26px] p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 cursor-pointer select-none bg-white dark:bg-[#181829] border border-slate-200/80 dark:border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_35px_rgba(128,26,69,0.08)] hover:border-[#D8B4FE]"
+              className="group relative rounded-[26px] p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 cursor-pointer select-none bg-white dark:bg-[#181829] border border-slate-200/80 dark:border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_35px_rgba(29,104,238,0.12)] hover:border-[#1D68EE]/40"
             >
               <div className="space-y-4">
                 {/* Icon & Duration Header */}
@@ -113,11 +113,11 @@ export function TestGrid() {
 
                 {/* Title & Subtitle */}
                 <div className="space-y-0.5">
-                  <h3 className="text-base sm:text-[17px] font-bold text-[#181829] dark:text-white group-hover:text-[#801A45] dark:group-hover:text-[#F472B6] transition-colors leading-snug">
+                  <h3 className="text-base sm:text-[17px] font-bold text-[#181829] dark:text-white group-hover:text-[#1D68EE] dark:group-hover:text-[#38BDF8] transition-colors leading-snug">
                     {test.title}
                   </h3>
                   {test.subtitle && (
-                    <div className="text-xs font-semibold text-[#801A45] dark:text-[#F472B6]">
+                    <div className="text-xs font-semibold text-[#1D68EE] dark:text-[#38BDF8]">
                       {test.subtitle}
                     </div>
                   )}
@@ -131,10 +131,10 @@ export function TestGrid() {
 
               {/* Bottom Action Footer */}
               <div className="pt-6 flex items-center justify-between border-t border-slate-100 dark:border-white/5 mt-4">
-                <span className="text-xs font-bold text-[#801A45] dark:text-[#F472B6] group-hover:underline">
+                <span className="text-xs font-bold text-[#1D68EE] dark:text-[#38BDF8] group-hover:underline">
                   Take Assessment
                 </span>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 shadow-2xs bg-[#F4EFF7] dark:bg-white/5 text-[#181829] dark:text-white group-hover:bg-[#801A45] group-hover:text-white group-hover:scale-110">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 shadow-2xs bg-blue-50 dark:bg-white/5 text-[#1D68EE] dark:text-white group-hover:bg-[#1D68EE] group-hover:text-white group-hover:scale-110">
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>

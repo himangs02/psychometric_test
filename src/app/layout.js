@@ -13,8 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Geeta Personality Portal | Psychometric Assessments",
-  description: "Scientifically backed psychometric assessments by Geeta University to discover your strengths and career pathways.",
+  title: "Geeta Career Compass | Psychometric Career Assessments",
+  description: "Discover careers that fit your interests, strengths and personality with scientifically calibrated assessments by Geeta University.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }) {

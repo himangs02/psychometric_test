@@ -26,6 +26,7 @@ import {
   Home,
   ShieldCheck,
   Check,
+  Bot,
 } from "lucide-react";
 import axios from "axios";
 
@@ -388,6 +389,21 @@ export default function ImprovedPersonalityTest() {
       setScore(totalScore);
       setResultDetails(interpretation);
       setOpen(true);
+
+      // Cache latest assessment for seamless continuity with the AI Career Counsellor
+      try {
+        const topStrength = interpretation?.breakdown?.[0]?.name || interpretation?.primaryRole?.name || interpretation?.dominantNeed?.name || interpretation?.title;
+        localStorage.setItem("latest_assessment_result", JSON.stringify({
+          testKey: selectedTest,
+          testName: test.title,
+          score: totalScore,
+          primaryStrength: topStrength,
+          interpretation: interpretation,
+          timestamp: new Date().toISOString()
+        }));
+      } catch (cacheErr) {
+        console.warn("Could not cache assessment result", cacheErr);
+      }
 
       const payload = {
         name: userInfo.name,
@@ -806,6 +822,16 @@ export default function ImprovedPersonalityTest() {
           <ResultContent testKey={selectedTest} resultDetails={resultDetails} score={score} />
 
           <div className="text-center pt-6 border-t border-[#F1F5F9] dark:border-white/5 flex flex-wrap items-center justify-center gap-3">
+            <Button
+              className="rounded-full px-6 bg-[#1D68EE] hover:bg-[#1557C0] text-white font-bold text-xs shadow-md shadow-[#1D68EE]/20 cursor-pointer"
+              onClick={() => {
+                setOpen(false);
+                window.location.href = `/counsellor?ref=assessment&testKey=${selectedTest}`;
+              }}
+            >
+              <Bot className="w-3.5 h-3.5 mr-1.5" />
+              <span>Discuss Results with AI Counsellor</span>
+            </Button>
             <Button
               className="rounded-full px-6 bg-[#4F46E5] hover:bg-[#3730A3] text-white font-bold text-xs"
               onClick={() => {

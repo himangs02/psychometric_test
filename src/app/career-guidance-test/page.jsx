@@ -238,7 +238,7 @@ export default function CareerGuidancePage() {
                     ["Holland Code Hexagon Analysis", false, true],
                     ["Recommended Academic Degrees", true, true],
                     ["Detailed Psychological Report", true, true],
-                    ["Total Calibrated Questions", "90 Questions (~10 mins)", "18 Questions (~5 mins)"],
+                    ["Total Calibrated Questions", "96 Questions (~15-20 mins)", "18 Questions (~10-12 mins)"],
                     ["Cost & Registration", "100% Free", "100% Free"],
                   ].map(([feature, hgmi, riasec], idx) => (
                     <tr key={idx} className="hover:bg-[#F8F9FC] dark:hover:bg-white/5 transition-colors">

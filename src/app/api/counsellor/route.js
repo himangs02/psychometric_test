@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
-import { generateCounsellorResponse } from '@/lib/counsellor/counsellorEngine';
+import { generateGeminiCounsellorResponse } from '@/lib/counsellor/geminiCounsellor';
 import { createInitialProfile } from '@/lib/counsellor/studentProfileExtractor';
 
 // Auto-initialize tables in database if they don't exist
@@ -55,8 +55,8 @@ export async function POST(req) {
 
     const currentProfile = studentProfile || createInitialProfile();
 
-    // Generate counsellor response through deterministic AI logic
-    const engineResult = generateCounsellorResponse({
+    // Generate counsellor response through Google Gemini AI engine with multi-layer guardrails
+    const engineResult = await generateGeminiCounsellorResponse({
       userMessage: message,
       conversationHistory,
       studentProfile: currentProfile,

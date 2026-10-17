@@ -117,12 +117,13 @@ ${testListFormatted}
 ### CONVERSATIONAL STYLE:
 - Warm, empathetic, non-judgmental, and structured.
 - Use clean Markdown with bullet points, bold key terms, and concise paragraphs.
+- Ensure every explanation is fully completed without leaving headings, sentences, or sections cut in half.
 - When recommending a test, mention its exact name and why it fits the student's current confusion.
 - Always conclude with an engaging question or invitation to explore a specific test or career aspect.`;
 }
 
 // Call Google Gemini generateContent REST API
-async function callGeminiGenerateAPI({ contents, systemPrompt, model = PRIMARY_MODEL, temperature = 0.35, maxTokens = 800 }) {
+async function callGeminiGenerateAPI({ contents, systemPrompt, model = PRIMARY_MODEL, temperature = 0.35, maxTokens = 3000 }) {
   return new Promise((resolve, reject) => {
     const postData = JSON.stringify({
       system_instruction: {
@@ -132,6 +133,9 @@ async function callGeminiGenerateAPI({ contents, systemPrompt, model = PRIMARY_M
       generationConfig: {
         temperature,
         maxOutputTokens: maxTokens,
+        thinkingConfig: {
+          thinkingBudget: 0,
+        },
       },
     });
 
@@ -381,7 +385,7 @@ Keep this in mind if they ask about their results or next career steps.`;
         systemPrompt: finalSystemPrompt,
         model: PRIMARY_MODEL,
         temperature: 0.35,
-        maxTokens: 800,
+        maxTokens: 3000,
       });
     } catch (primaryErr) {
       console.warn("[Gemini Counsellor] Primary model failed, trying fallback:", primaryErr.message);
@@ -390,7 +394,7 @@ Keep this in mind if they ask about their results or next career steps.`;
         systemPrompt: finalSystemPrompt,
         model: FALLBACK_MODEL,
         temperature: 0.35,
-        maxTokens: 800,
+        maxTokens: 3000,
       });
     }
   } catch (apiErr) {

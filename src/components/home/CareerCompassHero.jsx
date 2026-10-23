@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { 
-  ArrowRight, 
-  Play, 
-  Clock, 
-  Users, 
-  ShieldCheck, 
-  BarChart3, 
+import {
+  ArrowRight,
+  Play,
+  Clock,
+  Users,
+  ShieldCheck,
+  BarChart3,
   Compass,
   X
 } from "lucide-react";
@@ -26,7 +26,7 @@ export function CareerCompassHero() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center lg:items-end">
-          
+
           {/* Left Column: Headline, Subtitle, CTAs */}
           <div className="lg:col-span-6 space-y-6 text-left pb-4 lg:pb-8">
             {/* Top Pill Tag */}
@@ -89,7 +89,7 @@ export function CareerCompassHero() {
                 <div className="w-5 h-5 rounded-full bg-[#0F2E5E] dark:bg-blue-400 text-white dark:text-slate-900 flex items-center justify-center shrink-0">
                   <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
                 </div>
-                <span>Watch How It Works</span>
+                <span>How It Works</span>
               </button>
             </div>
           </div>

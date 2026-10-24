@@ -67,8 +67,7 @@ const exportToCsv = (data, filename = 'Test Submissions.csv') => {
   document.body.removeChild(link);
 };
 
-const ADMIN_EMAIL = "admin@geeta.edu.in";
-const ADMIN_PASSWORD = "admin123";
+
 
 // --- DATA: Intelligence Grid Details (Required for Admin View Mapping) ---
 const HGMI_DETAILS = {
@@ -162,6 +161,7 @@ export default function AdminPanel() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [testSubmissions, setTestSubmissions] = useState([]);
   const [filteredSubmissions, setFilteredSubmissions] = useState([]);
   const [testName, setTestName] = useState("all");
@@ -218,14 +218,34 @@ export default function AdminPanel() {
     }
   }, []);
 
-  const handleLogin = () => {
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      sessionStorage.setItem("adminLoggedIn", "true");
-      setLoggedIn(true);
-      setError("");
-      fetchAllTestSubmissions();
-    } else {
-      setError("Invalid email or password.");
+  const handleLogin = async () => {
+    if (!email.trim() || !password) {
+      setError("Please enter both institutional email and password.");
+      return;
+    }
+    setIsLoggingIn(true);
+    setError("");
+    try {
+      const res = await axios.post("/api/admin/login", {
+        email: email.trim(),
+        password: password,
+      });
+      if (res.data?.success) {
+        sessionStorage.setItem("adminLoggedIn", "true");
+        if (res.data?.user?.email) {
+          sessionStorage.setItem("adminUserEmail", res.data.user.email);
+        }
+        setLoggedIn(true);
+        setError("");
+        fetchAllTestSubmissions();
+      } else {
+        setError(res.data?.error || "Invalid email or password.");
+      }
+    } catch (err) {
+      console.error("Admin login error:", err);
+      setError(err.response?.data?.error || "Invalid email or password.");
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -241,6 +261,7 @@ export default function AdminPanel() {
 
   const handleLogout = () => {
     sessionStorage.removeItem("adminLoggedIn");
+    sessionStorage.removeItem("adminUserEmail");
     setLoggedIn(false);
     setEmail("");
     setPassword("");
@@ -312,7 +333,7 @@ export default function AdminPanel() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="admin@geeta.edu.in"
+                  placeholder="name@geetauniversity.edu.in"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="rounded-xl border-slate-200 dark:border-white/10 focus-visible:ring-[#2563EB]"
@@ -331,7 +352,7 @@ export default function AdminPanel() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") handleLogin();
+                    if (e.key === "Enter" && !isLoggingIn) handleLogin();
                   }}
                   className="rounded-xl border-slate-200 dark:border-white/10 focus-visible:ring-[#2563EB]"
                 />
@@ -339,9 +360,10 @@ export default function AdminPanel() {
 
               <Button
                 onClick={handleLogin}
-                className="w-full mt-6 py-5 rounded-xl font-bold text-sm text-white bg-[#2563EB] hover:bg-[#1D4ED8] shadow-lg shadow-blue-500/25 hover:scale-[1.01] active:scale-98 transition-all cursor-pointer"
+                disabled={isLoggingIn}
+                className="w-full mt-6 py-5 rounded-xl font-bold text-sm text-white bg-[#2563EB] hover:bg-[#1D4ED8] shadow-lg shadow-blue-500/25 hover:scale-[1.01] active:scale-98 transition-all cursor-pointer disabled:opacity-60"
               >
-                Sign In to Dashboard
+                {isLoggingIn ? "Signing In..." : "Sign In to Dashboard"}
               </Button>
 
               <div className="pt-4 text-center">
